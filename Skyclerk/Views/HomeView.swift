@@ -108,16 +108,7 @@ struct HomeView: View {
                 footerBar
             }
             .background(Color.appDark)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color.appDark, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Skyclerk")
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(.white)
-                }
-            }
+            .navigationBarHidden(true)
         }
         .onAppear {
             loadInitialData()
