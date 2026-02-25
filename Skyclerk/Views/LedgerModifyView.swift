@@ -589,13 +589,13 @@ struct LedgerModifyView: View {
         ZStack(alignment: .topLeading) {
             Button(action: action) {
                 Image(imageName)
-                    .resizable()
                     .renderingMode(.template)
+                    .resizable()
                     .scaledToFit()
-                    .frame(height: 36)
+                    .frame(width: 36, height: 36)
                     .foregroundColor(Color(hex: "b4b4b4"))
+                    .frame(width: 70, height: 70)
             }
-            .frame(width: 70, height: 70)
             .background(actionBtnBg)
             .overlay(
                 // Top highlight and bottom shadow matching Ionic box-shadow:

@@ -1,0 +1,509 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0826F8F3015B1EA28023C28E /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80B1A06D11E7CAD382FDA1A /* Category.swift */; };
+		0A646627D829D18E9D3CF96B /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63347CC2769063BE6FA1475A /* APIResponse.swift */; };
+		16512008D24A92E24203FAF2 /* ContactService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC25FE829710E52CF32D51 /* ContactService.swift */; };
+		195AAEA08D20EDFB6E13194F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCC6EDFD71458C1A42F4127 /* ImagePicker.swift */; };
+		1C27C03962BEF2EB12042EE7 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDAB48A4A8A94B22617D5C2 /* AccountService.swift */; };
+		2C81BA371BD96CC6E5647B53 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2108D097B71B3C26A28354E /* SettingsView.swift */; };
+		38B947F24130BBDD82946974 /* LabelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBE054AB4871F00BCA53FA9 /* LabelService.swift */; };
+		3A501B8F610ABAE5BFF12780 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A975DD3E264AFE0AEF626B30 /* Assets.xcassets */; };
+		4730854D71859F5F70B59458 /* LedgerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C868AFA63F5008D540517DE2 /* LedgerService.swift */; };
+		4F58A474A851BE97EAF17972 /* FileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FE25CD976595316BA6F0EF /* FileModel.swift */; };
+		50EE60CEA1A01589EE99A275 /* UploadReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575CE0B4FF616AC664F061EC /* UploadReceiptView.swift */; };
+		5106C5AF4203E1A55225FA47 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF302CB841DC87E144C13BA /* PaywallView.swift */; };
+		512F055F5529406532BC769C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B895F273F6A7643CF5FC1B /* Environment.swift */; };
+		562C603380EE2BEC5F7E2608 /* SkyclerkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17071F38AC0513CA855A07B3 /* SkyclerkApp.swift */; };
+		61924DD083397576120B5C33 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D1E16C288080CFF1771275 /* APIService.swift */; };
+		62046207B06C208509A9ED97 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AEBCB918546B03F93A1F63 /* Extensions.swift */; };
+		6DEA307C3F7694C2B3B407AA /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9338B7F5A234865EACE1454D /* LocationManager.swift */; };
+		705C04D0AA7F3273FB94F9B3 /* LedgerViewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC6287EC055DF8290F5707 /* LedgerViewPage.swift */; };
+		8F4ED45C230F902A1F273FD1 /* SnapClerk.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE21FC64B11EFB3B1126E67F /* SnapClerk.swift */; };
+		92BD52F6487ACA8740022791 /* SnapClerkRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C619FC95A8FD7586D1D06039 /* SnapClerkRowView.swift */; };
+		9480FE0606C407B7B39319D6 /* SnapClerkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D182B13FF89136A83277F3FA /* SnapClerkService.swift */; };
+		99BAC077A5F188A052B01ADF /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529F6CECE277E64E5335FA8 /* Secrets.swift */; };
+		9AE9E10C5811216A62C66976 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA9B19DBDEF7A47EF69662 /* Account.swift */; };
+		A2BB81A4328D5649565A264C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717BA66A98F24CDBFBE9FC77 /* HomeView.swift */; };
+		A479AC8B3D25A5AF7ED5C1E2 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55A103F4C21221894B99495 /* Label.swift */; };
+		AE38BDC2F6C8C88DFCC9F7D6 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800814C344EE1F225992B2CD /* Contact.swift */; };
+		AF707D90E171CC4E593C0646 /* PingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F536C970C4906304A3CC8C15 /* PingService.swift */; };
+		B509E316EB985D0D7AA3C6A3 /* Billing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCFDEE1FCA112941B8C1775 /* Billing.swift */; };
+		B62E515F88F3279F36BF1EB5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661F8C99C84EA520EF2BC328 /* User.swift */; };
+		BAB87AB70F81DE2A92D5EBC0 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29ABF6760D6A7DE498A970D5 /* IntroView.swift */; };
+		C90FD1A761AAD07D51AD6267 /* MeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FA4CA8DFF1B56038BC7DFF /* MeService.swift */; };
+		CCFFFEC3326E120ABF84D1BF /* ReportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BE638DCA509BE342D2EA41 /* ReportService.swift */; };
+		D842B1C82C4B5AF6747E3967 /* LedgerModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692AA171F980073E0F0C6442 /* LedgerModifyView.swift */; };
+		E8B653DCEFDCE65A3C2A25E2 /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC5E4F389C966A3AA9151F0 /* LabelsView.swift */; };
+		EC6DAE1A594DFE60AE30AEED /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07B817E8204A69367E00A61 /* AuthService.swift */; };
+		EC91C280E1F0DDABF07F356F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293CE3CAC96C7E82788D2FDD /* LoginView.swift */; };
+		F95A73108077E5AD1C10074B /* Ledger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039BECED09853EBB55275F55 /* Ledger.swift */; };
+		FAB3AC56A79A62C5093D4B9A /* LedgerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7018142DB031D61EF1FC33D2 /* LedgerRowView.swift */; };
+		FC91F9FD3A4EDD1D8777870F /* CategoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24E89CF032354DF2E65B764 /* CategoryService.swift */; };
+		FD23F219ADCFB26A5204CC50 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7D7C1F0A1C780D2CF7187C /* FileService.swift */; };
+		FDE244B1BB99F8BE465F47D7 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FACAD3BC37A1DE5D10A13 /* RegisterView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		039BECED09853EBB55275F55 /* Ledger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ledger.swift; sourceTree = "<group>"; };
+		0E7D7C1F0A1C780D2CF7187C /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
+		17071F38AC0513CA855A07B3 /* SkyclerkApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyclerkApp.swift; sourceTree = "<group>"; };
+		1D8EE29BB3A018D6001DB23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		293CE3CAC96C7E82788D2FDD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		29ABF6760D6A7DE498A970D5 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
+		3ABC25FE829710E52CF32D51 /* ContactService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactService.swift; sourceTree = "<group>"; };
+		3DDAB48A4A8A94B22617D5C2 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
+		4FF302CB841DC87E144C13BA /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		575CE0B4FF616AC664F061EC /* UploadReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReceiptView.swift; sourceTree = "<group>"; };
+		58D1E16C288080CFF1771275 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		5973F6D423E6C4F4E0E114D7 /* Skyclerk.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Skyclerk.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BCFDEE1FCA112941B8C1775 /* Billing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Billing.swift; sourceTree = "<group>"; };
+		63347CC2769063BE6FA1475A /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
+		661F8C99C84EA520EF2BC328 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		692AA171F980073E0F0C6442 /* LedgerModifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerModifyView.swift; sourceTree = "<group>"; };
+		7018142DB031D61EF1FC33D2 /* LedgerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerRowView.swift; sourceTree = "<group>"; };
+		717BA66A98F24CDBFBE9FC77 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		76AEBCB918546B03F93A1F63 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		800814C344EE1F225992B2CD /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		88FE25CD976595316BA6F0EF /* FileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileModel.swift; sourceTree = "<group>"; };
+		89EC6287EC055DF8290F5707 /* LedgerViewPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerViewPage.swift; sourceTree = "<group>"; };
+		8DBE054AB4871F00BCA53FA9 /* LabelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelService.swift; sourceTree = "<group>"; };
+		90B895F273F6A7643CF5FC1B /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		9338B7F5A234865EACE1454D /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		95BE638DCA509BE342D2EA41 /* ReportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportService.swift; sourceTree = "<group>"; };
+		974FACAD3BC37A1DE5D10A13 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		A975DD3E264AFE0AEF626B30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AAC5E4F389C966A3AA9151F0 /* LabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsView.swift; sourceTree = "<group>"; };
+		ABCC6EDFD71458C1A42F4127 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		B80B1A06D11E7CAD382FDA1A /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		C619FC95A8FD7586D1D06039 /* SnapClerkRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapClerkRowView.swift; sourceTree = "<group>"; };
+		C6CA9B19DBDEF7A47EF69662 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		C868AFA63F5008D540517DE2 /* LedgerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerService.swift; sourceTree = "<group>"; };
+		D182B13FF89136A83277F3FA /* SnapClerkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapClerkService.swift; sourceTree = "<group>"; };
+		D2108D097B71B3C26A28354E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D529F6CECE277E64E5335FA8 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		DE21FC64B11EFB3B1126E67F /* SnapClerk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapClerk.swift; sourceTree = "<group>"; };
+		E07B817E8204A69367E00A61 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		E4FA4CA8DFF1B56038BC7DFF /* MeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeService.swift; sourceTree = "<group>"; };
+		F24E89CF032354DF2E65B764 /* CategoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryService.swift; sourceTree = "<group>"; };
+		F536C970C4906304A3CC8C15 /* PingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingService.swift; sourceTree = "<group>"; };
+		F55A103F4C21221894B99495 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		60AB1B792D68D83027C8D4F1 = {
+			isa = PBXGroup;
+			children = (
+				6F3B5D0E36B2CDBF2B2165C3 /* Skyclerk */,
+				692A9037A2C3ED537E85B9A7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		611C4D5F7A672ADC8D9BA05F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				717BA66A98F24CDBFBE9FC77 /* HomeView.swift */,
+				29ABF6760D6A7DE498A970D5 /* IntroView.swift */,
+				AAC5E4F389C966A3AA9151F0 /* LabelsView.swift */,
+				692AA171F980073E0F0C6442 /* LedgerModifyView.swift */,
+				89EC6287EC055DF8290F5707 /* LedgerViewPage.swift */,
+				293CE3CAC96C7E82788D2FDD /* LoginView.swift */,
+				4FF302CB841DC87E144C13BA /* PaywallView.swift */,
+				974FACAD3BC37A1DE5D10A13 /* RegisterView.swift */,
+				D2108D097B71B3C26A28354E /* SettingsView.swift */,
+				575CE0B4FF616AC664F061EC /* UploadReceiptView.swift */,
+				BCE04C9AF3CF2ABF4E977E76 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		692A9037A2C3ED537E85B9A7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5973F6D423E6C4F4E0E114D7 /* Skyclerk.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69ABFA6817A0FA0F5170B1B0 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				76AEBCB918546B03F93A1F63 /* Extensions.swift */,
+				ABCC6EDFD71458C1A42F4127 /* ImagePicker.swift */,
+				9338B7F5A234865EACE1454D /* LocationManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		6F3B5D0E36B2CDBF2B2165C3 /* Skyclerk */ = {
+			isa = PBXGroup;
+			children = (
+				A975DD3E264AFE0AEF626B30 /* Assets.xcassets */,
+				1D8EE29BB3A018D6001DB23D /* Info.plist */,
+				17071F38AC0513CA855A07B3 /* SkyclerkApp.swift */,
+				D3FD4DA546C8FEE4158415D2 /* Models */,
+				8A0E8A6CCB56B2A213451DFC /* Services */,
+				69ABFA6817A0FA0F5170B1B0 /* Utilities */,
+				611C4D5F7A672ADC8D9BA05F /* Views */,
+			);
+			path = Skyclerk;
+			sourceTree = "<group>";
+		};
+		8A0E8A6CCB56B2A213451DFC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3DDAB48A4A8A94B22617D5C2 /* AccountService.swift */,
+				58D1E16C288080CFF1771275 /* APIService.swift */,
+				E07B817E8204A69367E00A61 /* AuthService.swift */,
+				F24E89CF032354DF2E65B764 /* CategoryService.swift */,
+				3ABC25FE829710E52CF32D51 /* ContactService.swift */,
+				90B895F273F6A7643CF5FC1B /* Environment.swift */,
+				0E7D7C1F0A1C780D2CF7187C /* FileService.swift */,
+				8DBE054AB4871F00BCA53FA9 /* LabelService.swift */,
+				C868AFA63F5008D540517DE2 /* LedgerService.swift */,
+				E4FA4CA8DFF1B56038BC7DFF /* MeService.swift */,
+				F536C970C4906304A3CC8C15 /* PingService.swift */,
+				95BE638DCA509BE342D2EA41 /* ReportService.swift */,
+				D529F6CECE277E64E5335FA8 /* Secrets.swift */,
+				D182B13FF89136A83277F3FA /* SnapClerkService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		BCE04C9AF3CF2ABF4E977E76 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				7018142DB031D61EF1FC33D2 /* LedgerRowView.swift */,
+				C619FC95A8FD7586D1D06039 /* SnapClerkRowView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		D3FD4DA546C8FEE4158415D2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C6CA9B19DBDEF7A47EF69662 /* Account.swift */,
+				63347CC2769063BE6FA1475A /* APIResponse.swift */,
+				5BCFDEE1FCA112941B8C1775 /* Billing.swift */,
+				B80B1A06D11E7CAD382FDA1A /* Category.swift */,
+				800814C344EE1F225992B2CD /* Contact.swift */,
+				88FE25CD976595316BA6F0EF /* FileModel.swift */,
+				F55A103F4C21221894B99495 /* Label.swift */,
+				039BECED09853EBB55275F55 /* Ledger.swift */,
+				DE21FC64B11EFB3B1126E67F /* SnapClerk.swift */,
+				661F8C99C84EA520EF2BC328 /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D8608B14F2CF998C2DDEC88C /* Skyclerk */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB5358BA6539295A95064D27 /* Build configuration list for PBXNativeTarget "Skyclerk" */;
+			buildPhases = (
+				5E568322C3A81873244158B4 /* Sources */,
+				4F3E26FCE5116480505636DB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Skyclerk;
+			packageProductDependencies = (
+			);
+			productName = Skyclerk;
+			productReference = 5973F6D423E6C4F4E0E114D7 /* Skyclerk.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5F6C4A9ECA8D79869425B124 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					D8608B14F2CF998C2DDEC88C = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 58FB5706F6E6490A29A9D551 /* Build configuration list for PBXProject "Skyclerk" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 60AB1B792D68D83027C8D4F1;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D8608B14F2CF998C2DDEC88C /* Skyclerk */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4F3E26FCE5116480505636DB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A501B8F610ABAE5BFF12780 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5E568322C3A81873244158B4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A646627D829D18E9D3CF96B /* APIResponse.swift in Sources */,
+				61924DD083397576120B5C33 /* APIService.swift in Sources */,
+				9AE9E10C5811216A62C66976 /* Account.swift in Sources */,
+				1C27C03962BEF2EB12042EE7 /* AccountService.swift in Sources */,
+				EC6DAE1A594DFE60AE30AEED /* AuthService.swift in Sources */,
+				B509E316EB985D0D7AA3C6A3 /* Billing.swift in Sources */,
+				0826F8F3015B1EA28023C28E /* Category.swift in Sources */,
+				FC91F9FD3A4EDD1D8777870F /* CategoryService.swift in Sources */,
+				AE38BDC2F6C8C88DFCC9F7D6 /* Contact.swift in Sources */,
+				16512008D24A92E24203FAF2 /* ContactService.swift in Sources */,
+				512F055F5529406532BC769C /* Environment.swift in Sources */,
+				62046207B06C208509A9ED97 /* Extensions.swift in Sources */,
+				4F58A474A851BE97EAF17972 /* FileModel.swift in Sources */,
+				FD23F219ADCFB26A5204CC50 /* FileService.swift in Sources */,
+				A2BB81A4328D5649565A264C /* HomeView.swift in Sources */,
+				195AAEA08D20EDFB6E13194F /* ImagePicker.swift in Sources */,
+				BAB87AB70F81DE2A92D5EBC0 /* IntroView.swift in Sources */,
+				A479AC8B3D25A5AF7ED5C1E2 /* Label.swift in Sources */,
+				38B947F24130BBDD82946974 /* LabelService.swift in Sources */,
+				E8B653DCEFDCE65A3C2A25E2 /* LabelsView.swift in Sources */,
+				F95A73108077E5AD1C10074B /* Ledger.swift in Sources */,
+				D842B1C82C4B5AF6747E3967 /* LedgerModifyView.swift in Sources */,
+				FAB3AC56A79A62C5093D4B9A /* LedgerRowView.swift in Sources */,
+				4730854D71859F5F70B59458 /* LedgerService.swift in Sources */,
+				705C04D0AA7F3273FB94F9B3 /* LedgerViewPage.swift in Sources */,
+				6DEA307C3F7694C2B3B407AA /* LocationManager.swift in Sources */,
+				EC91C280E1F0DDABF07F356F /* LoginView.swift in Sources */,
+				C90FD1A761AAD07D51AD6267 /* MeService.swift in Sources */,
+				5106C5AF4203E1A55225FA47 /* PaywallView.swift in Sources */,
+				AF707D90E171CC4E593C0646 /* PingService.swift in Sources */,
+				FDE244B1BB99F8BE465F47D7 /* RegisterView.swift in Sources */,
+				CCFFFEC3326E120ABF84D1BF /* ReportService.swift in Sources */,
+				99BAC077A5F188A052B01ADF /* Secrets.swift in Sources */,
+				2C81BA371BD96CC6E5647B53 /* SettingsView.swift in Sources */,
+				562C603380EE2BEC5F7E2608 /* SkyclerkApp.swift in Sources */,
+				8F4ED45C230F902A1F273FD1 /* SnapClerk.swift in Sources */,
+				92BD52F6487ACA8740022791 /* SnapClerkRowView.swift in Sources */,
+				9480FE0606C407B7B39319D6 /* SnapClerkService.swift in Sources */,
+				50EE60CEA1A01589EE99A275 /* UploadReceiptView.swift in Sources */,
+				B62E515F88F3279F36BF1EB5 /* User.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		58E42850F70E897B3644818C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Skyclerk/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloudmanic.skyclerk;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		6BDEB0821DD8D4AC603800A6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Skyclerk/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A129BC07A2CDB6738A16C3E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Skyclerk/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A1C2529BA102079320B54D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Skyclerk/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloudmanic.skyclerk;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		58FB5706F6E6490A29A9D551 /* Build configuration list for PBXProject "Skyclerk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A129BC07A2CDB6738A16C3E8 /* Debug */,
+				6BDEB0821DD8D4AC603800A6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EB5358BA6539295A95064D27 /* Build configuration list for PBXNativeTarget "Skyclerk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				58E42850F70E897B3644818C /* Debug */,
+				A1C2529BA102079320B54D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5F6C4A9ECA8D79869425B124 /* Project object */;
+}

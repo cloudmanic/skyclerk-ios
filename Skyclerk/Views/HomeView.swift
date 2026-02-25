@@ -167,8 +167,7 @@ struct HomeView: View {
                 HStack(spacing: 8) {
                     Image("add-income-icon")
                         .resizable()
-                        .renderingMode(.template)
-                        .foregroundColor(.white)
+                        .scaledToFit()
                         .frame(width: 24, height: 24)
                     Text("Add Income")
                         .font(.system(size: 16, weight: .regular))
@@ -205,8 +204,7 @@ struct HomeView: View {
                 HStack(spacing: 8) {
                     Image("add-expense-icon")
                         .resizable()
-                        .renderingMode(.template)
-                        .foregroundColor(.white)
+                        .scaledToFit()
                         .frame(width: 24, height: 24)
                     Text("Add Expense")
                         .font(.system(size: 16, weight: .regular))
