@@ -41,7 +41,7 @@ struct LedgerRowView: View {
 
                 // Right column (text-right): Currency amount in inset shadow box.
                 amountColumn
-                    .padding(.trailing, 12)
+                    .padding(.trailing, 8)
             }
             .padding(.vertical, 12)
         }
@@ -102,7 +102,11 @@ struct LedgerRowView: View {
     /// Includes white text-shadow matching Ionic $t_shadow_white.
     /// Matches the Ionic .amount class with its :before pseudo-element for the indicator dot.
     private var amountColumn: some View {
-        ZStack(alignment: .trailing) {
+        // Use HStack with negative spacing so the circle overlaps the right edge
+        // of the amount box by 8px, matching the Ionic :before pseudo-element
+        // (right: -8px). This keeps the dot in the layout flow so it won't get
+        // clipped by adjacent row backgrounds.
+        HStack(spacing: -8) {
             // Amount text inside the inset shadow box matching Ionic styling:
             // background #eaeaea, inset box-shadow rgba(0,0,0,0.33), border-radius 4px,
             // text-shadow 0px 1px 0px rgba(255,255,255,0.4).
@@ -130,12 +134,12 @@ struct LedgerRowView: View {
                         .allowsHitTesting(false)
                 )
 
-            // Colored circle indicator on the right edge of the box.
-            // Matches Ionic :before pseudo-element: right: -8px, 16x16, border-radius 50%.
+            // Colored circle indicator straddling the right edge of the amount box.
+            // The -8 spacing causes it to overlap the box. Matches Ionic :before
+            // pseudo-element: right: -8px, 16x16, border-radius 50%.
             Circle()
                 .fill(ledger.Amount < 0 ? Color(hex: "b7433f") : Color(hex: "698451"))
                 .frame(width: 16, height: 16)
-                .offset(x: 8)
         }
     }
 
