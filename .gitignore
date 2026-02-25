@@ -1,0 +1,12 @@
+build/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcworkspace/xcuserdata/
+xcuserdata/
+*.dSYM.zip
+*.dSYM
+.DS_Store
+
+# Secrets (API keys, client IDs) - see Secrets.example.swift
+Skyclerk/Services/Secrets.swift
