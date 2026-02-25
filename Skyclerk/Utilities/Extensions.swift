@@ -23,6 +23,23 @@ extension Double {
         formatter.currencyCode = currency
         return formatter.string(from: NSNumber(value: self)) ?? "$0.00"
     }
+
+    /// Format as currency string with no decimal places (e.g., "$1,235").
+    /// Used for the P&L footer display matching the Ionic pipe format 'currency:USD:true:1.0-0'.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale identifier for formatting (default: "en-US").
+    ///   - currency: The ISO 4217 currency code (default: "USD").
+    /// - Returns: A formatted currency string with zero fraction digits, or "$0" if formatting fails.
+    func toCurrencyWholeNumber(locale: String = "en-US", currency: String = "USD") -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = Locale(identifier: locale)
+        formatter.currencyCode = currency
+        formatter.maximumFractionDigits = 0
+        formatter.minimumFractionDigits = 0
+        return formatter.string(from: NSNumber(value: self)) ?? "$0"
+    }
 }
 
 extension Date {

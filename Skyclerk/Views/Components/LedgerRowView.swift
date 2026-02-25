@@ -2,85 +2,154 @@
 // LedgerRowView.swift
 //
 // Created on 2026-02-25.
-// Copyright © 2026 Cloudmanic Labs, LLC. All rights reserved.
+// Copyright 2026 Cloudmanic Labs, LLC. All rights reserved.
 //
 
 import SwiftUI
 
 /// A single row in the ledger list that displays a financial transaction entry.
-/// Shows the transaction date on the left, the contact name and category in the
-/// middle, and the formatted currency amount on the right. The entire row is
-/// wrapped in a NavigationLink so tapping it navigates to the ledger detail view.
-/// Expense amounts are displayed in red, while income amounts use default white text.
+/// Matches the Ionic app-ledger-list row styling exactly:
+/// - 3-column layout: date (col-2), vendor/category (col-6), amount (remaining)
+/// - Date column: month/day in small text on the first line, year below, font-weight 500, size 15px
+/// - Vendor column: contact name in #606060, category name as a link in #1181c3
+/// - Amount column: inset shadow box (#eaeaea background, rounded 4px, bold 16px text),
+///   with a small colored circle indicator (green #698451 for income, red #b7433f for expense)
+/// - Row text color is dark (not white) since rows have white/light gray backgrounds
+/// The entire row is wrapped in a NavigationLink for tap navigation to the detail view.
 struct LedgerRowView: View {
     /// The ledger entry to display in this row. Contains the date, amount,
     /// contact, category, and all other transaction details.
     let ledger: Ledger
 
     /// The main view body. Lays out the date, contact/category, and amount
-    /// in a horizontal stack with proportional widths. Wraps everything in
-    /// a NavigationLink targeting the LedgerViewPage detail screen.
+    /// in a horizontal stack matching the Ionic 2/6/4 column proportions.
+    /// Wraps everything in a NavigationLink targeting the LedgerViewPage detail screen.
     var body: some View {
         NavigationLink(destination: LedgerViewPage(ledger: ledger)) {
-            HStack(alignment: .center, spacing: 8) {
-                // Left column: Transaction date formatted as "MMM dd\nyyyy".
+            HStack(alignment: .center, spacing: 0) {
+                // Left column (size="2"): Transaction date formatted as "MMM dd\nyyyy".
                 dateColumn
+                    .frame(width: 60)
+                    .padding(.leading, 12)
 
-                // Middle column: Contact display name on top, category name below.
+                // Middle column (size="6", class="size-sm"): Contact name and category.
                 contactColumn
+                    .padding(.horizontal, 8)
 
-                // Right column: Currency amount, colored red for expenses.
+                Spacer()
+
+                // Right column (text-right): Currency amount in inset shadow box.
                 amountColumn
+                    .padding(.trailing, 12)
             }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 12)
+            .padding(.vertical, 12)
         }
         .buttonStyle(.plain)
     }
 
-    /// The date column displayed on the left side of the row (~25% width).
+    /// The date column displayed on the left side of the row.
     /// Parses the ledger's date string and formats it as a two-line display
-    /// with month/day on the first line and year on the second line.
-    /// Falls back to showing the raw date string if parsing fails.
+    /// matching the Ionic format: "MMM dd" in small text on top, "yyyy" below.
+    /// Uses font-weight 500, font-size 15px matching the Ionic .date class.
     private var dateColumn: some View {
-        Text(ledger.formattedDate?.toLedgerDisplay() ?? ledger.LedgerDate)
-            .font(.system(size: 12, weight: .medium, design: .monospaced))
-            .foregroundColor(Color.appTextGray)
-            .multilineTextAlignment(.center)
-            .frame(width: 65, alignment: .center)
+        VStack(spacing: 0) {
+            if let date = ledger.formattedDate {
+                Text(formatMonthDay(date))
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.black)
+                Text(formatYear(date))
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundColor(.black)
+            } else {
+                Text(ledger.LedgerDate)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.black)
+            }
+        }
     }
 
-    /// The contact and category column displayed in the center of the row (~50% width).
-    /// Shows the contact display name (vendor/payee) prominently on top, with the
-    /// category name in smaller, lighter text below it. Both are left-aligned.
+    /// The contact and category column displayed in the center of the row.
+    /// Shows the contact display name (vendor) in #606060 color, with the
+    /// category name below in #1181c3 (link blue) as a smaller text.
+    /// Matches the Ionic .vendor class styling.
     private var contactColumn: some View {
         VStack(alignment: .leading, spacing: 2) {
-            // Contact display name (vendor or payee).
+            // Contact display name (vendor or payee) in gray.
             Text(ledger.contactDisplayName)
-                .font(.system(size: 15, weight: .medium))
-                .foregroundColor(.white)
+                .font(.system(size: 14))
+                .foregroundColor(Color(hex: "606060"))
                 .lineLimit(1)
 
-            // Category name in smaller gray text.
+            // Category name in link blue (#1181c3) matching the Ionic <a> styling.
             if !ledger.LedgerCategory.Name.isEmpty {
                 Text(ledger.LedgerCategory.Name)
-                    .font(.system(size: 12))
-                    .foregroundColor(Color.appTextLightGray)
+                    .font(.system(size: 16))
+                    .foregroundColor(Color(hex: "1181c3"))
                     .lineLimit(1)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    /// The amount column displayed on the right side of the row (~25% width).
-    /// Formats the ledger amount as a currency string using the Double.toCurrency()
-    /// extension. Negative amounts (expenses) are displayed in the app's danger (red)
-    /// color, while positive amounts (income) use the app's success (green) color.
+    /// The amount column displayed on the right side of the row.
+    /// Renders the currency amount inside an inset shadow-style box (#eaeaea background)
+    /// with a small colored circle indicator on the right edge. Green circle (#698451) for
+    /// income (positive amounts), red circle and red text (#b7433f) for expenses (negative).
+    /// The box has rounded corners (4px), font-weight 600, font-size 16px, and text-align right.
+    /// Matches the Ionic .amount class with its :before pseudo-element for the indicator dot.
     private var amountColumn: some View {
-        Text(ledger.Amount.toCurrency())
-            .font(.system(size: 14, weight: .semibold))
-            .foregroundColor(ledger.Amount < 0 ? Color.appDanger : Color.appSuccess)
-            .frame(width: 90, alignment: .trailing)
+        ZStack(alignment: .trailing) {
+            // Amount text inside the inset shadow box matching Ionic styling:
+            // background #eaeaea, inset box-shadow, outer subtle white shadow, border-radius 4px.
+            Text(ledger.Amount.toCurrency())
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(ledger.Amount < 0 ? Color(hex: "b7433f") : Color(hex: "606060"))
+                .padding(.vertical, 7)
+                .padding(.leading, 5)
+                .padding(.trailing, 15)
+                .frame(maxWidth: 100, alignment: .trailing)
+                .background(Color(hex: "eaeaea"))
+                .cornerRadius(4)
+                .overlay(
+                    // Simulate inset shadow: dark gradient at the top fading down.
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.black.opacity(0.18), Color.clear],
+                                startPoint: .top,
+                                endPoint: UnitPoint(x: 0.5, y: 0.35)
+                            )
+                        )
+                        .allowsHitTesting(false)
+                )
+                .shadow(color: Color.white.opacity(0.004), radius: 0, x: 0, y: 2)
+
+            // Colored circle indicator on the right edge of the box.
+            Circle()
+                .fill(ledger.Amount < 0 ? Color(hex: "b7433f") : Color(hex: "698451"))
+                .frame(width: 16, height: 16)
+                .offset(x: 8)
+        }
+    }
+
+    /// Formats a Date as "MMM dd" for the top line of the date column.
+    ///
+    /// - Parameter date: The date to format.
+    /// - Returns: A string like "Feb 25".
+    private func formatMonthDay(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM dd"
+        return formatter.string(from: date)
+    }
+
+    /// Formats a Date as "yyyy" for the bottom line of the date column.
+    ///
+    /// - Parameter date: The date to format.
+    /// - Returns: A string like "2026".
+    private func formatYear(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy"
+        return formatter.string(from: date)
     }
 }
 
@@ -94,8 +163,7 @@ struct LedgerRowView: View {
                 LedgerContact: Contact(Name: "Acme Corp"),
                 LedgerCategory: Category(Name: "Sales Revenue")
             ))
-
-            Divider().background(Color.appBgDarkGray)
+            .background(Color.white)
 
             LedgerRowView(ledger: Ledger(
                 Id: 2,
@@ -104,7 +172,16 @@ struct LedgerRowView: View {
                 LedgerContact: Contact(Name: "Office Depot"),
                 LedgerCategory: Category(Name: "Office Supplies")
             ))
+            .background(Color(hex: "f7f7f7"))
+
+            LedgerRowView(ledger: Ledger(
+                Id: 3,
+                LedgerDate: "2026-01-15",
+                Amount: 1250.00,
+                LedgerContact: Contact(FirstName: "John", LastName: "Smith"),
+                LedgerCategory: Category(Name: "Consulting Income")
+            ))
+            .background(Color.white)
         }
-        .background(Color.appDark)
     }
 }

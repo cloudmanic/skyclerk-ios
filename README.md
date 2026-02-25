@@ -31,7 +31,7 @@ Edit `Skyclerk/Services/Secrets.swift` with your API keys:
 - **clientId** — OAuth client ID for the Skyclerk API
 - **googleMapsApiKey** — Google Maps API key for location services
 
-`Secrets.swift` is excluded from version control via `.gitignore`.
+`Secrets.swift` is excluded from version control via `.gitignore`. See [Secrets Management](#secrets-management) for details on how this works for local development and CI/CD.
 
 ### 3. Generate the Xcode project and build
 
@@ -273,6 +273,56 @@ Log output includes the HTTP method, full URL, auth token, response status code,
 ```bash
 xcrun simctl spawn booted log show --predicate 'subsystem == "com.cloudmanic.skyclerk"' --last 5m --style compact
 ```
+
+## Secrets Management
+
+This project keeps sensitive values (API keys, client IDs) out of version control. Here's how it works:
+
+### How it works
+
+- `Skyclerk/Services/Environment.swift` references `AppSecrets.clientId` and `AppSecrets.googleMapsApiKey`
+- `AppSecrets` is defined in `Skyclerk/Services/Secrets.swift`, which is **gitignored**
+- `Secrets.example.swift` (committed) serves as a template with placeholder values
+
+### Local development
+
+Copy the template and fill in your values:
+
+```bash
+cp Secrets.example.swift Skyclerk/Services/Secrets.swift
+# Edit Secrets.swift with your actual keys
+```
+
+The project will not compile without `Secrets.swift` in place.
+
+### CI/CD and App Store builds
+
+Since iOS apps are compiled ahead of time, secrets are embedded in the binary at build time. There are no runtime environment variables. For automated builds (GitHub Actions, Xcode Cloud, etc.), generate `Secrets.swift` as a build step:
+
+**GitHub Actions example:**
+
+```yaml
+- name: Inject secrets
+  run: |
+    cat > Skyclerk/Services/Secrets.swift << 'SWIFT'
+    import Foundation
+    struct AppSecrets {
+        static let clientId = "${{ secrets.SKYCLERK_CLIENT_ID }}"
+        static let googleMapsApiKey = "${{ secrets.GOOGLE_MAPS_API_KEY }}"
+    }
+    SWIFT
+```
+
+**Xcode Cloud:**
+
+Use custom build scripts in `ci_scripts/ci_post_clone.sh` to generate the file from environment variables configured in App Store Connect.
+
+### Adding new secrets
+
+1. Add the new value to `AppSecrets` in `Secrets.swift` (local only)
+2. Add a placeholder to `Secrets.example.swift` (committed)
+3. Reference it from `AppEnvironment` in `Environment.swift`
+4. Update CI/CD scripts to inject the new value
 
 ## License
 

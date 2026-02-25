@@ -79,13 +79,16 @@ struct SnapClerk: Codable, Identifiable {
     var id: Int { Id }
 
     /// Parses the CreatedAt string into a native Swift Date object.
-    /// Expects the ISO 8601 format "yyyy-MM-dd'T'HH:mm:ss'Z'" with UTC timezone.
-    /// Returns nil if the date string cannot be parsed.
+    /// Supports ISO 8601 with and without fractional seconds. Returns nil if unparseable.
     var createdDate: Date? {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
-        return formatter.date(from: CreatedAt)
+        let f1 = DateFormatter()
+        f1.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        f1.timeZone = TimeZone(abbreviation: "UTC")
+        if let date = f1.date(from: CreatedAt) { return date }
+        let f2 = DateFormatter()
+        f2.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        f2.timeZone = TimeZone(abbreviation: "UTC")
+        return f2.date(from: CreatedAt)
     }
 
     /// Returns a StatusColor enum value based on the current processing status.

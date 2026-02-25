@@ -2,17 +2,18 @@
 // LedgerViewPage.swift
 //
 // Created on 2026-02-25.
-// Copyright © 2026 Cloudmanic Labs, LLC. All rights reserved.
+// Copyright 2026 Cloudmanic Labs, LLC. All rights reserved.
 //
 
 import MapKit
 import SwiftUI
 
 /// Detail view for displaying a single ledger entry's full information.
-/// Shows the contact name as a title, followed by a card-style details list
-/// (date, amount, category, labels, note), a thumbnail grid of attached files,
-/// a map showing the transaction location (if available), and a delete button.
-/// The ledger entry can be deleted after confirmation, which navigates back.
+/// Pixel-perfect match of the Ionic Skyclerk ledger-view page. Uses a light-themed
+/// card (#f2f2f2) on a dark background (#232323) displaying the contact header,
+/// a detail list (date, amount, category, labels, note), a thumbnail grid of
+/// attached files, a map if coordinates exist, and a danger-styled delete button.
+/// A dark footer toolbar provides a "Go Back to Ledger" navigation link.
 struct LedgerViewPage: View {
     /// The ledger entry to display. Passed in from the parent list view.
     let ledger: Ledger
@@ -38,6 +39,8 @@ struct LedgerViewPage: View {
     /// Whether the full-size image sheet is presented.
     @State private var showFullImage: Bool = false
 
+    // MARK: - Computed Properties
+
     /// Determines whether the map section should be displayed.
     /// Returns true only when both latitude and longitude are non-zero,
     /// indicating that a real GPS location was recorded.
@@ -46,7 +49,7 @@ struct LedgerViewPage: View {
     }
 
     /// Determines the thumbnail size based on the number of attached files.
-    /// Returns 100pt for 1 file, 75pt for 2 files, and 50pt for 3 or more.
+    /// Matches the Ionic app: 100pt for 1 file, 75pt for 2 files, 50pt for 3+.
     private var thumbnailSize: CGFloat {
         switch ledger.Files.count {
         case 1: return 100
@@ -56,7 +59,7 @@ struct LedgerViewPage: View {
     }
 
     /// The coordinate region for the map view, centered on the ledger's GPS location.
-    /// Uses a span of 0.01 degrees (~1km) for a neighborhood-level view.
+    /// Uses a span matching the Ionic app's zoom level 14 (~0.01 degrees).
     private var mapRegion: MKCoordinateRegion {
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: ledger.Lat, longitude: ledger.Lon),
@@ -64,41 +67,71 @@ struct LedgerViewPage: View {
         )
     }
 
+    /// Builds the contact subtitle text. If Contact.Name exists, it is the subtitle
+    /// and FirstName LastName is the title. Otherwise FirstName LastName is the subtitle.
+    /// Matches the Ionic template's conditional header rendering.
+    private var contactSubtitle: String {
+        if !ledger.LedgerContact.Name.isEmpty {
+            return ledger.LedgerContact.Name
+        }
+        let parts = [ledger.LedgerContact.FirstName, ledger.LedgerContact.LastName].filter { !$0.isEmpty }
+        return parts.joined(separator: " ")
+    }
+
+    /// Builds the contact title text (FirstName LastName), shown only when Contact.Name exists.
+    /// This matches the Ionic ion-card-title that only appears when Contact.Name is present.
+    private var contactTitle: String? {
+        guard !ledger.LedgerContact.Name.isEmpty else { return nil }
+        let parts = [ledger.LedgerContact.FirstName, ledger.LedgerContact.LastName].filter { !$0.isEmpty }
+        let joined = parts.joined(separator: " ")
+        return joined.isEmpty ? nil : joined
+    }
+
+    /// The color for the amount text. Expenses (#b7433f red) vs income (default #606060 dark gray).
+    /// Matches the Ionic ledger list's .danger amount color for expenses.
+    private var amountColor: Color {
+        if ledger.LedgerCategory.isExpense {
+            return Color(hex: "b7433f")
+        }
+        return Color(hex: "606060")
+    }
+
     // MARK: - Body
 
-    /// The main view body. Displays the ledger details in a scrollable dark-themed layout
-    /// with a card-style information section, optional attachments grid, optional map,
-    /// and a delete button at the bottom.
+    /// The main view body. Renders a scrollable page with dark background (#232323),
+    /// a light card with contact header and detail rows, optional file thumbnails card,
+    /// optional map card, and a danger-gradient delete button. A dark footer toolbar
+    /// provides a back-navigation link matching the Ionic footer.
     var body: some View {
         ZStack {
-            // Full-screen dark background extending to all edges.
-            Color.appDark
+            // Full-screen background matching Ionic ion-content --background: #232323.
+            Color(hex: "232323")
                 .ignoresSafeArea()
 
             ScrollView {
-                VStack(spacing: 20) {
-                    // Contact display name as the page title.
-                    headerSection
+                VStack(spacing: 0) {
+                    // Top spacing matching Ionic card margin-top: 60px.
+                    Spacer().frame(height: 60)
 
-                    // Card showing date, amount, category, labels, and note.
-                    detailsCard
+                    // Main detail card with contact header and data rows.
+                    detailCard
 
-                    // Grid of file thumbnails (only shown if files exist).
+                    // File attachments card (only shown if files exist).
                     if !ledger.Files.isEmpty {
-                        attachmentsSection
+                        attachmentsCard
                     }
 
-                    // Map showing the transaction location (only shown if coordinates exist).
+                    // Map card (only shown if coordinates exist).
                     if hasLocation {
-                        mapSection
+                        mapCard
                     }
 
-                    // Full-width red delete button with confirmation.
+                    // Full-width danger-styled delete button.
                     deleteButton
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
+                        .padding(.bottom, 40)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
-                .padding(.bottom, 40)
             }
         }
         .navigationTitle("Entry Details")
@@ -106,35 +139,31 @@ struct LedgerViewPage: View {
         .navigationBarBackButtonHidden(true)
         .darkToolbar()
         .toolbar {
-            // Back button in the bottom toolbar to return to the ledger list.
+            // Dark footer toolbar with back button matching Ionic ion-footer.
             ToolbarItem(placement: .bottomBar) {
                 HStack {
                     Button {
                         dismiss()
                     } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 12, weight: .semibold))
-                            Text("Go Back to Ledger")
-                                .font(.system(size: 14, weight: .medium))
-                        }
-                        .foregroundColor(Color.appLink)
+                        Text("\u{00AB} Go Back to Ledger")
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundColor(.white)
                     }
                     Spacer()
                 }
             }
         }
-        .toolbarBackground(Color.appDarkGray, for: .bottomBar)
+        .toolbarBackground(Color(hex: "2c2c2c"), for: .bottomBar)
         .toolbarColorScheme(.dark, for: .bottomBar)
-        .alert("Delete Entry", isPresented: $showDeleteConfirmation) {
-            Button("Delete", role: .destructive) {
+        .alert("Delete Ledger Entry", isPresented: $showDeleteConfirmation) {
+            Button("No, just joking.", role: .cancel) {}
+            Button("Yes, I am sure.", role: .destructive) {
                 performDelete()
             }
-            Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Are you sure you want to delete this entry? This action cannot be undone.")
+            Text("Are you sure you want to delete this ledger entry?")
         }
-        .alert("Error", isPresented: $showError) {
+        .alert("Oops!", isPresented: $showError) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(errorMessage)
@@ -144,95 +173,189 @@ struct LedgerViewPage: View {
         }
     }
 
-    // MARK: - Header Section
+    // MARK: - Detail Card
 
-    /// Displays the contact's display name as a large, prominent title
-    /// at the top of the detail view.
-    private var headerSection: some View {
-        HStack {
-            Text(ledger.contactDisplayName)
-                .font(.system(size: 24, weight: .bold))
-                .foregroundColor(.white)
-            Spacer()
+    /// The main information card matching the Ionic ion-card with background #f2f2f2.
+    /// Contains the contact header (subtitle/title) and a list of detail rows
+    /// (Date, Amount, Category, Labels, Note) styled as Ionic ion-items with
+    /// left-aligned labels and right-aligned note values separated by dividers.
+    private var detailCard: some View {
+        VStack(spacing: 0) {
+            // Contact header section matching Ionic ion-card-header.
+            cardHeader
+
+            // Detail rows matching Ionic ion-list > ion-item layout.
+            detailsList
         }
+        .background(Color(hex: "f2f2f2"))
+        .cornerRadius(10)
+        .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
+        .padding(.horizontal, 16)
     }
 
-    // MARK: - Details Card
+    /// The card header section displaying the contact name(s).
+    /// Matches the Ionic ion-card-header with subtitle (smaller gray text)
+    /// and optional title (larger bold text). The subtitle is Contact.Name
+    /// when it exists, with FirstName LastName as the title. When no Contact.Name
+    /// exists, FirstName LastName serves as the subtitle with no title.
+    private var cardHeader: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            // Subtitle: Contact.Name if available, otherwise FirstName LastName.
+            // Matches Ionic ion-card-subtitle styling.
+            Text(contactSubtitle)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundColor(Color(hex: "999999"))
+                .textCase(.uppercase)
 
-    /// A card-style section displaying the ledger entry's key details
-    /// in a labeled list format. Each row shows a label on the left
-    /// and the corresponding value on the right.
-    private var detailsCard: some View {
+            // Title: FirstName LastName, only shown when Contact.Name exists.
+            // Matches Ionic ion-card-title styling.
+            if let title = contactTitle {
+                Text(title)
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(Color(hex: "1a1a1a"))
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 16)
+        .padding(.top, 16)
+        .padding(.bottom, 12)
+    }
+
+    /// The list of detail rows inside the card, matching Ionic ion-list > ion-item.
+    /// Each row has a left-aligned label and a right-aligned value with a separator
+    /// between rows. Uses standard Ionic item styling: dark labels on the left,
+    /// muted gray (#8c8c8c) note values on the right.
+    private var detailsList: some View {
         VStack(spacing: 0) {
-            // Date row
+            // Date row showing the formatted short date.
             detailRow(label: "Date", value: ledger.formattedDate?.toShortDate() ?? ledger.LedgerDate)
 
-            Divider().background(Color.appDarkGray.opacity(0.3))
+            rowDivider
 
-            // Amount row with currency formatting.
-            detailRow(label: "Amount", value: abs(ledger.Amount).toCurrency())
+            // Amount row showing the currency value with type-based coloring.
+            amountRow
 
-            Divider().background(Color.appDarkGray.opacity(0.3))
+            rowDivider
 
-            // Category name row.
+            // Category row showing the assigned category name.
             detailRow(label: "Category", value: ledger.LedgerCategory.Name)
 
-            // Labels row (only shown if labels exist).
-            if !ledger.Labels.isEmpty {
-                Divider().background(Color.appDarkGray.opacity(0.3))
-                detailRow(label: "Labels", value: ledger.Labels.map { $0.Name }.joined(separator: ", "))
-            }
+            rowDivider
 
-            // Note row (only shown if a note exists).
-            if !ledger.Note.isEmpty {
-                Divider().background(Color.appDarkGray.opacity(0.3))
-                detailRow(label: "Note", value: ledger.Note)
-            }
+            // Labels row showing comma-separated label names.
+            labelsRow
+
+            rowDivider
+
+            // Note row showing the transaction memo/note.
+            noteRow
         }
-        .background(Color.appDarkGray)
-        .cornerRadius(12)
     }
 
-    /// Builds a single detail row with a left-aligned label and a right-aligned value.
-    /// Used within the details card for each piece of ledger information.
+    /// Builds a single detail row matching an Ionic ion-item with ion-label on the
+    /// left and ion-note slot="end" on the right. The label is dark text on the left,
+    /// the value is muted gray (#8c8c8c) text right-aligned on the right.
     ///
     /// - Parameters:
-    ///   - label: The field name displayed on the left (e.g., "Date", "Amount").
+    ///   - label: The field name displayed on the left (e.g., "Date", "Category").
     ///   - value: The field value displayed on the right.
-    /// - Returns: A styled horizontal row view.
+    /// - Returns: A styled horizontal row view matching Ionic ion-item layout.
     private func detailRow(label: String, value: String) -> some View {
-        HStack(alignment: .top) {
+        HStack {
             Text(label)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundColor(Color.appTextGray)
-                .frame(width: 80, alignment: .leading)
+                .font(.system(size: 16))
+                .foregroundColor(Color(hex: "1a1a1a"))
+
+            Spacer()
 
             Text(value)
                 .font(.system(size: 14))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.leading)
-
-            Spacer()
+                .foregroundColor(Color(hex: "8c8c8c"))
+                .multilineTextAlignment(.trailing)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
     }
 
-    // MARK: - Attachments Section
+    /// The amount detail row with type-based color. Expenses display in red (#b7433f),
+    /// income in dark gray (#606060). Matches the Ionic ledger-view amount display
+    /// with the raw numeric value (no sign prefix).
+    private var amountRow: some View {
+        HStack {
+            Text("Amount")
+                .font(.system(size: 16))
+                .foregroundColor(Color(hex: "1a1a1a"))
 
-    /// A grid of thumbnail images for attached files. Each thumbnail loads
-    /// asynchronously from the Thumb600By600Url. Tapping a thumbnail opens
-    /// the full-size image in a sheet.
-    private var attachmentsSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Attachments")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(.white)
+            Spacer()
 
-            // Flexible grid that wraps thumbnails based on available space.
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: thumbnailSize), spacing: 10)], spacing: 10) {
+            Text(abs(ledger.Amount).toCurrency())
+                .font(.system(size: 14))
+                .foregroundColor(amountColor)
+                .multilineTextAlignment(.trailing)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+
+    /// The labels detail row showing comma-separated label names.
+    /// Matches the Ionic template's label rendering with comma separators
+    /// between label names, excluding the trailing comma on the last item.
+    private var labelsRow: some View {
+        HStack {
+            Text("Labels")
+                .font(.system(size: 16))
+                .foregroundColor(Color(hex: "1a1a1a"))
+
+            Spacer()
+
+            Text(ledger.Labels.map { $0.Name }.joined(separator: ", "))
+                .font(.system(size: 14))
+                .foregroundColor(Color(hex: "8c8c8c"))
+                .multilineTextAlignment(.trailing)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+
+    /// The note detail row showing the transaction memo.
+    /// Matches the Ionic ion-item for Note with right-aligned gray text.
+    private var noteRow: some View {
+        HStack(alignment: .top) {
+            Text("Note")
+                .font(.system(size: 16))
+                .foregroundColor(Color(hex: "1a1a1a"))
+
+            Spacer()
+
+            Text(ledger.Note)
+                .font(.system(size: 14))
+                .foregroundColor(Color(hex: "8c8c8c"))
+                .multilineTextAlignment(.trailing)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+
+    /// A thin hairline divider between detail rows, matching the Ionic ion-item
+    /// border separator. Inset from the left to match Ionic's item divider style.
+    private var rowDivider: some View {
+        Divider()
+            .background(Color(hex: "c8c7cc"))
+            .padding(.leading, 16)
+    }
+
+    // MARK: - Attachments Card
+
+    /// A card displaying attached file thumbnails in a wrapping horizontal grid.
+    /// Matches the Ionic ion-card for files with background #f2f2f2, float-left
+    /// thumbnail divs with 5px padding. Thumbnail sizes scale based on file count:
+    /// 100px for 1 file, 75px for 2, 50px for 3+. Tapping a thumbnail opens
+    /// the full-size image in a modal sheet.
+    private var attachmentsCard: some View {
+        VStack(spacing: 0) {
+            // Wrapping horizontal layout matching Ionic float:left divs with 5px padding.
+            FlowLayout(spacing: 5) {
                 ForEach(ledger.Files) { file in
-                    // Each thumbnail is tappable to view the full-size image.
                     Button {
                         selectedFileURL = file.Url
                         showFullImage = true
@@ -245,12 +368,9 @@ struct LedgerViewPage: View {
                                     .scaledToFill()
                                     .frame(width: thumbnailSize, height: thumbnailSize)
                                     .clipped()
-                                    .cornerRadius(8)
                             case .failure:
-                                // Fallback icon for failed image loads.
                                 thumbnailPlaceholder
                             case .empty:
-                                // Loading placeholder while the image downloads.
                                 ProgressView()
                                     .frame(width: thumbnailSize, height: thumbnailSize)
                             @unknown default:
@@ -258,50 +378,58 @@ struct LedgerViewPage: View {
                             }
                         }
                     }
+                    .padding(5)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(5)
         }
-        .padding(16)
-        .background(Color.appDarkGray)
-        .cornerRadius(12)
+        .background(Color(hex: "f2f2f2"))
+        .cornerRadius(10)
+        .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
     }
 
     /// A placeholder view shown when an attachment thumbnail fails to load.
-    /// Displays a document icon in a gray rectangle.
+    /// Displays a document icon in a gray rectangle matching the card background.
     private var thumbnailPlaceholder: some View {
-        RoundedRectangle(cornerRadius: 8)
-            .fill(Color.appBgDarkGray)
+        Rectangle()
+            .fill(Color(hex: "d8d8d8"))
             .frame(width: thumbnailSize, height: thumbnailSize)
             .overlay(
                 Image(systemName: "doc")
-                    .foregroundColor(Color.appTextGray)
+                    .foregroundColor(Color(hex: "8c8c8c"))
             )
     }
 
     // MARK: - Full Image Sheet
 
     /// A sheet that displays the full-size image when a thumbnail is tapped.
-    /// Uses AsyncImage to load the full URL and provides a close button.
+    /// Matches the Ionic view-attachment page with a full-screen image container
+    /// on a white background, with the file name overlaid at the bottom
+    /// and a close button to dismiss.
     private var fullImageSheet: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.white.ignoresSafeArea()
 
-            VStack {
+            VStack(spacing: 0) {
+                // Top bar with close button.
                 HStack {
                     Spacer()
-                    // Close button to dismiss the full image sheet.
                     Button {
                         showFullImage = false
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 28))
-                            .foregroundColor(.white.opacity(0.8))
+                            .foregroundColor(Color(hex: "8c8c8c"))
                     }
                     .padding()
                 }
 
                 Spacer()
 
+                // Full-size image loaded from the file URL.
                 if let urlString = selectedFileURL, let url = URL(string: urlString) {
                     AsyncImage(url: url) { phase in
                         switch phase {
@@ -309,13 +437,14 @@ struct LedgerViewPage: View {
                             image
                                 .resizable()
                                 .scaledToFit()
+                                .frame(maxWidth: .infinity)
                                 .padding()
                         case .failure:
                             Text("Failed to load image")
-                                .foregroundColor(Color.appTextGray)
+                                .foregroundColor(Color(hex: "8c8c8c"))
                         case .empty:
                             ProgressView()
-                                .tint(.white)
+                                .tint(Color(hex: "8c8c8c"))
                         @unknown default:
                             EmptyView()
                         }
@@ -327,17 +456,13 @@ struct LedgerViewPage: View {
         }
     }
 
-    // MARK: - Map Section
+    // MARK: - Map Card
 
-    /// Displays a map centered on the ledger entry's GPS coordinates.
-    /// Shows a single annotation pin at the recorded location.
-    /// Only rendered when hasLocation is true (both Lat and Lon are non-zero).
-    private var mapSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Location")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(.white)
-
+    /// Displays a map card matching the Ionic ion-card with agm-map inside.
+    /// Shows a 200pt tall map centered on the ledger's GPS coordinates at
+    /// zoom level 14, with a marker pin at the location. Background #f2f2f2.
+    private var mapCard: some View {
+        VStack(spacing: 0) {
             Map(initialPosition: .region(mapRegion)) {
                 Marker(ledger.contactDisplayName, coordinate: CLLocationCoordinate2D(
                     latitude: ledger.Lat,
@@ -345,15 +470,21 @@ struct LedgerViewPage: View {
                 ))
             }
             .frame(height: 200)
-            .cornerRadius(12)
             .allowsHitTesting(false)
         }
+        .background(Color(hex: "f2f2f2"))
+        .cornerRadius(10)
+        .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
     }
 
     // MARK: - Delete Button
 
-    /// A full-width red button that triggers a confirmation alert before deleting
-    /// the ledger entry. Shows a loading spinner while the delete request is in progress.
+    /// A full-width delete button matching the Ionic danger-class button.
+    /// Uses a gradient from #a73632 (bottom) to #bd4743 (top) with white text,
+    /// rounded corners, and a slight shadow. Triggers a confirmation alert
+    /// before performing the delete. Shows a spinner while deleting.
     private var deleteButton: some View {
         Button {
             showDeleteConfirmation = true
@@ -364,23 +495,30 @@ struct LedgerViewPage: View {
                         .tint(.white)
                 }
                 Text("Delete Entry")
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.system(size: 14, weight: .semibold))
             }
             .foregroundColor(.white)
+            .shadow(color: .black.opacity(0.45), radius: 0, x: 0, y: 1)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
-            .background(Color.appDanger)
-            .cornerRadius(10)
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [Color(hex: "a73632"), Color(hex: "bd4743")]),
+                    startPoint: .bottom,
+                    endPoint: .top
+                )
+            )
+            .cornerRadius(4)
         }
         .disabled(isDeleting)
-        .padding(.top, 8)
     }
 
     // MARK: - Delete Action
 
     /// Performs the delete operation by calling LedgerService.deleteLedger().
     /// On success, dismisses the view to return to the ledger list.
-    /// On failure, displays an error alert with the error description.
+    /// On failure, displays an error alert with the server error description.
+    /// Matches the Ionic deleteLedger() method's behavior and error handling.
     private func performDelete() {
         isDeleting = true
 
@@ -394,11 +532,88 @@ struct LedgerViewPage: View {
             } catch {
                 await MainActor.run {
                     isDeleting = false
-                    errorMessage = "Failed to delete entry: \(error.localizedDescription)"
+                    errorMessage = error.localizedDescription
                     showError = true
                 }
             }
         }
+    }
+}
+
+// MARK: - FlowLayout
+
+/// A horizontal wrapping layout that arranges child views left-to-right,
+/// wrapping to the next line when the available width is exceeded. This matches
+/// the Ionic float:left behavior used for file thumbnail containers in the
+/// ledger-view attachments card.
+struct FlowLayout: Layout {
+    /// The spacing between items in the flow layout.
+    var spacing: CGFloat = 0
+
+    /// Calculates the total size needed to lay out all subviews in a
+    /// wrapping horizontal arrangement within the proposed width.
+    ///
+    /// - Parameters:
+    ///   - subviews: The child views to be laid out.
+    ///   - proposal: The proposed size from the parent container.
+    /// - Returns: The computed size needed for all subviews.
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let result = computeLayout(subviews: subviews, proposal: proposal)
+        return result.size
+    }
+
+    /// Places each subview at its computed position within the wrapping
+    /// horizontal layout, flowing left-to-right and top-to-bottom.
+    ///
+    /// - Parameters:
+    ///   - bounds: The available rectangle to place subviews within.
+    ///   - proposal: The proposed size from the parent container.
+    ///   - subviews: The child views to place.
+    ///   - cache: Unused layout cache.
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let result = computeLayout(subviews: subviews, proposal: proposal)
+        for (index, subview) in subviews.enumerated() {
+            let point = CGPoint(
+                x: bounds.minX + result.positions[index].x,
+                y: bounds.minY + result.positions[index].y
+            )
+            subview.place(at: point, proposal: .unspecified)
+        }
+    }
+
+    /// Computes the positions and total size for all subviews arranged in a
+    /// wrapping horizontal flow. Iterates through subviews, placing each one
+    /// after the previous with spacing. When a subview would exceed the
+    /// available width, it wraps to a new line.
+    ///
+    /// - Parameters:
+    ///   - subviews: The child views to compute layout for.
+    ///   - proposal: The proposed size constraint from the parent.
+    /// - Returns: A tuple containing the array of computed positions and the total size.
+    private func computeLayout(subviews: Subviews, proposal: ProposedViewSize) -> (positions: [CGPoint], size: CGSize) {
+        let maxWidth = proposal.width ?? .infinity
+        var positions: [CGPoint] = []
+        var currentX: CGFloat = 0
+        var currentY: CGFloat = 0
+        var lineHeight: CGFloat = 0
+        var maxX: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+
+            if currentX + size.width > maxWidth, currentX > 0 {
+                currentX = 0
+                currentY += lineHeight + spacing
+                lineHeight = 0
+            }
+
+            positions.append(CGPoint(x: currentX, y: currentY))
+            lineHeight = max(lineHeight, size.height)
+            currentX += size.width + spacing
+            maxX = max(maxX, currentX)
+        }
+
+        return (positions, CGSize(width: maxX, height: currentY + lineHeight))
     }
 }
 

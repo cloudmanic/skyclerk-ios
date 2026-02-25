@@ -77,17 +77,21 @@ struct Ledger: Codable, Identifiable {
 
     /// Parses the LedgerDate string from the API into a native Swift Date object.
     /// Supports multiple date formats returned by the API:
-    /// - Full ISO 8601 format: "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    /// - ISO 8601 with fractional seconds: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    /// - ISO 8601 without fractional seconds: "yyyy-MM-dd'T'HH:mm:ss'Z'"
     /// - Simple date format: "yyyy-MM-dd"
     /// Returns nil if the date string cannot be parsed by any known format.
     var formattedDate: Foundation.Date? {
         let formatters: [DateFormatter] = {
             let f1 = DateFormatter()
-            f1.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+            f1.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
             f1.timeZone = TimeZone(abbreviation: "UTC")
             let f2 = DateFormatter()
-            f2.dateFormat = "yyyy-MM-dd"
-            return [f1, f2]
+            f2.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+            f2.timeZone = TimeZone(abbreviation: "UTC")
+            let f3 = DateFormatter()
+            f3.dateFormat = "yyyy-MM-dd"
+            return [f1, f2, f3]
         }()
         for formatter in formatters {
             if let date = formatter.date(from: self.LedgerDate) {

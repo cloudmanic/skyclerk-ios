@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="27.813" height="54.031" viewBox="0 0 27.813 54.031">
+  <metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.6-c142 79.160924, 2017/07/13-01:06:39        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""/>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                           
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .cls-1 {
+        fill: #bebebe;
+        fill-rule: evenodd;
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="347.625" y="353.969" width="27.813" height="54.031" filterUnits="userSpaceOnUse">
+      <feOffset result="offset" dy="2" in="SourceAlpha"/>
+      <feGaussianBlur result="blur"/>
+      <feFlood result="flood" flood-color="#fff"/>
+      <feComposite result="composite" operator="in" in2="blur"/>
+      <feBlend result="blend" in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <path id="currncy" class="cls-1" d="M364.985,392.386a3.855,3.855,0,0,1-2.913,1.1,4.841,4.841,0,0,1-3.907-1.62,7.119,7.119,0,0,1-1.375-4.724h-9.175a12.873,12.873,0,0,0,3.172,9.08q3.171,3.444,9.107,4.07v5.5h4.329v-5.472a12.721,12.721,0,0,0,8.045-3.431,10.254,10.254,0,0,0,2.954-7.6,10.957,10.957,0,0,0-.926-4.71,10.76,10.76,0,0,0-2.559-3.431,18.279,18.279,0,0,0-3.88-2.627q-2.246-1.157-4.778-2.232a11.267,11.267,0,0,1-3.675-2.26,4.409,4.409,0,0,1-1.144-3.2,4.56,4.56,0,0,1,.994-3.118,3.521,3.521,0,0,1,2.791-1.13,3.586,3.586,0,0,1,3.1,1.525,7.426,7.426,0,0,1,1.089,4.356h9.2a12.761,12.761,0,0,0-2.845-8.535,12.158,12.158,0,0,0-7.828-4.1v-5.853h-4.329v5.744a13.354,13.354,0,0,0-8.276,3.472,10.056,10.056,0,0,0-3.1,7.582,11.346,11.346,0,0,0,.871,4.683,10.159,10.159,0,0,0,2.505,3.4,17.046,17.046,0,0,0,3.893,2.587q2.26,1.116,4.928,2.205a9.926,9.926,0,0,1,3.73,2.314,4.987,4.987,0,0,1,1.062,3.377A4.193,4.193,0,0,1,364.985,392.386Z" transform="translate(-347.625 -353.969)"/>
+</svg>

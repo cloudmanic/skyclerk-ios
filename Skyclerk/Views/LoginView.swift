@@ -8,10 +8,12 @@
 import SwiftUI
 
 /// The login form screen where users enter their email and password to
-/// authenticate with their existing Skyclerk account. Displays a centered
-/// title, email and password fields, a submit button, and a link to the
-/// registration screen. Uses an async task to call AuthService.login()
-/// and displays an alert on authentication failure.
+/// authenticate with their existing Skyclerk account. Matches the Ionic
+/// app's login page pixel-for-pixel: dark #232323 content background,
+/// #141414 form card with rounded corners and box shadow, white input
+/// fields with 5px radius, a gradient light-gray "Add Your Skyclerk Account"
+/// button with plus icon, a "Don't have an account?" section, and a dark
+/// footer toolbar with cancel link and small logo.
 struct LoginView: View {
     /// The shared authentication service injected from the parent view hierarchy.
     /// Used to call the login method and update the authentication state.
@@ -37,177 +39,232 @@ struct LoginView: View {
     /// The error message to display in the alert when login fails.
     @State private var errorMessage: String = ""
 
-    /// The main view body. Displays the login form inside a ScrollView with
-    /// a dark background. Includes the title, form fields, submit button,
-    /// and registration link. A bottom toolbar provides cancel and logo options.
+    /// The main view body. Renders the full login screen with a dark background,
+    /// a form card container, input fields, submit button, register link, and
+    /// a dark footer toolbar matching the Ionic app's layout exactly.
     var body: some View {
         ZStack {
-            // Full-screen dark background that extends to all edges.
-            Color.appDark
+            // Full-screen content background matching Ionic's ion-content --background: #232323.
+            Color(hex: "232323")
                 .ignoresSafeArea()
 
             ScrollView {
-                VStack(spacing: 24) {
-                    Spacer()
-                        .frame(height: 20)
-
-                    // Screen title centered at the top.
+                // Form card container matching Ionic's .form-content styling:
+                // background: $dark (#141414), padding: 16px, border-radius: 10px,
+                // box-shadow for depth effect.
+                VStack(spacing: 0) {
+                    // Title: "Add Your Account" matching Ionic's h3 styling inside
+                    // app-login [income] .form-content: color white, font-size 30px,
+                    // margin 0, centered.
                     titleSection
 
-                    // Email and password input fields.
+                    // Spacer between title and form fields.
+                    Spacer()
+                        .frame(height: 16)
+
+                    // Email and password input fields matching Ionic's login-form-list
+                    // styling with stacked labels and white input backgrounds.
                     formFieldsSection
 
-                    // Submit button and registration link.
-                    actionButtonsSection
+                    // Primary submit button matching Ionic's button-light button-custom
+                    // styling with gradient background and plus icon.
+                    submitButtonSection
 
-                    Spacer()
+                    // "Don't have an account?" section matching Ionic's .create-account
+                    // styling with centered text and link button.
+                    createAccountSection
                 }
-                .padding(.horizontal, 30)
+                .padding(16)
+                .background(Color.appDark)
+                .cornerRadius(10)
+                .shadow(color: .black.opacity(0.75), radius: 16, x: 0, y: 0)
+                .padding(.top, 0)
             }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
-            // Bottom toolbar with cancel button on the left and logo on the right.
+            // Bottom toolbar matching Ionic's ion-footer with dark toolbar,
+            // cancel button on the left and small logo on the right.
             ToolbarItemGroup(placement: .bottomBar) {
                 bottomToolbarContent
             }
         }
-        .toolbarBackground(Color.appDarkGray, for: .bottomBar)
+        .toolbarBackground(Color(hex: "2c2c2c"), for: .bottomBar)
         .toolbarBackground(.visible, for: .bottomBar)
         .toolbarColorScheme(.dark, for: .bottomBar)
         .darkToolbar()
-        .alert("Login Error", isPresented: $showError) {
+        .alert("Oops! Login Error", isPresented: $showError) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(errorMessage)
         }
     }
 
-    /// The screen title displayed prominently at the top of the form.
-    /// Shows "Add Your Account" in white bold text, centered horizontally.
+    /// The screen title displayed at the top of the form card.
+    /// Matches Ionic's app-login h3: color white (#fff), font-size 30px,
+    /// font-weight 700 (bold), padding 10px 0 5px, margin 0, text-center.
     private var titleSection: some View {
         Text("Add Your Account")
-            .font(.system(size: 24, weight: .bold))
+            .font(.system(size: 30, weight: .bold))
             .foregroundColor(.white)
+            .padding(.top, 10)
+            .padding(.bottom, 5)
             .frame(maxWidth: .infinity, alignment: .center)
     }
 
     /// The form fields section containing the email and password inputs.
-    /// Each field has a label above it with an asterisk indicating it is required.
-    /// The email field uses the email keyboard type and disables autocorrection.
-    /// The password field uses a SecureField for masked input.
+    /// Matches Ionic's [login-form-list] styling: transparent background,
+    /// margin-bottom 16px. Each ion-item has transparent background, stacked
+    /// label (16px, font-weight 600, color #bcbcbc), and white input field
+    /// (height 42px, border-radius 5px, margin-top 10px, padding 8px).
     private var formFieldsSection: some View {
-        VStack(spacing: 18) {
-            // Email address input field.
-            VStack(alignment: .leading, spacing: 6) {
+        VStack(spacing: 0) {
+            // Email address input field matching Ionic's stacked label + input pattern.
+            VStack(alignment: .leading, spacing: 0) {
                 Text("Email Address *")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(Color.appTextGray)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(Color(hex: "bcbcbc"))
 
                 TextField("", text: $email)
                     .keyboardType(.emailAddress)
                     .textContentType(.emailAddress)
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.never)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 12)
-                    .background(Color.appDarkGray)
-                    .cornerRadius(8)
-                    .foregroundColor(.white)
+                    .padding(.horizontal, 8)
+                    .frame(height: 42)
+                    .background(Color.white)
+                    .cornerRadius(5)
+                    .foregroundColor(.black)
+                    .padding(.top, 10)
             }
 
-            // Password input field.
-            VStack(alignment: .leading, spacing: 6) {
+            Spacer()
+                .frame(height: 16)
+
+            // Password input field matching Ionic's stacked label + input pattern.
+            VStack(alignment: .leading, spacing: 0) {
                 Text("Password *")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(Color.appTextGray)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(Color(hex: "bcbcbc"))
 
                 SecureField("", text: $password)
                     .textContentType(.password)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 12)
-                    .background(Color.appDarkGray)
-                    .cornerRadius(8)
-                    .foregroundColor(.white)
+                    .padding(.horizontal, 8)
+                    .frame(height: 42)
+                    .background(Color.white)
+                    .cornerRadius(5)
+                    .foregroundColor(.black)
+                    .padding(.top, 10)
             }
         }
+        .padding(.bottom, 16)
     }
 
-    /// The action buttons section containing the primary submit button and
-    /// a secondary link to the registration screen. The submit button is
-    /// styled with a white/light appearance, shows a loading spinner when
-    /// a request is in progress, and is disabled during loading.
-    private var actionButtonsSection: some View {
-        VStack(spacing: 16) {
-            // Primary submit button that triggers the login action.
-            Button {
-                performLogin()
-            } label: {
-                HStack(spacing: 10) {
-                    if isLoading {
-                        ProgressView()
-                            .tint(Color.appDark)
-                    } else {
-                        Image(systemName: "plus")
-                            .font(.system(size: 16, weight: .semibold))
-                    }
+    /// The primary submit button matching Ionic's button-light button-custom styling:
+    /// --background: linear-gradient(0deg, #939393 0%, #c3c3c3 100%),
+    /// --border-radius: 6px, height 50px (min-height 60px for size="large"),
+    /// --border-width: 2px, --border-style: solid, --border-color: #141414,
+    /// box-shadow with inset white highlight and outer glow,
+    /// plus.svg icon (24px height) with 10px margin-right, white text color.
+    private var submitButtonSection: some View {
+        Button {
+            performLogin()
+        } label: {
+            HStack(spacing: 10) {
+                if isLoading {
+                    ProgressView()
+                        .tint(.white)
+                } else {
+                    // Plus icon matching Ionic's <img img-left src="assets/imgs/plus.svg">
+                    // with height: 24px and margin-right: 10px.
+                    Image("plus")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 24)
 
                     Text("Add Your Skyclerk Account")
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(.system(size: 16, weight: .regular))
                 }
-                .foregroundColor(Color.appDark)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(Color.white)
-                .cornerRadius(10)
             }
-            .disabled(isLoading)
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity, minHeight: 60)
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color(hex: "c3c3c3"),
+                        Color(hex: "939393")
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            .cornerRadius(6)
+            .overlay(
+                RoundedRectangle(cornerRadius: 6)
+                    .stroke(Color(hex: "141414"), lineWidth: 2)
+            )
+        }
+        .disabled(isLoading)
+    }
 
-            // Secondary registration prompt and link.
-            VStack(spacing: 6) {
+    /// The "Don't have an account?" section matching Ionic's .create-account styling
+    /// inside app-login: height 30vh (approximated), margin-top 1rem, centered
+    /// vertically and horizontally. Paragraph text is white, 16px.
+    /// Link button uses color="link" which maps to #b2d6ec.
+    private var createAccountSection: some View {
+        VStack(spacing: 0) {
+            Spacer()
+                .frame(height: 24)
+
+            VStack(spacing: 8) {
                 Text("Don't have an account?")
-                    .font(.system(size: 14))
-                    .foregroundColor(Color.appTextGray)
+                    .font(.system(size: 16))
+                    .foregroundColor(.white)
 
                 Button {
                     navigationPath.append("register")
                 } label: {
                     Text("Register for a Skyclerk account now!")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(Color.appLink)
+                        .font(.system(size: 16))
+                        .foregroundColor(Color(hex: "b2d6ec"))
                 }
             }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 40)
         }
     }
 
-    /// The bottom toolbar content with a cancel button on the left that
-    /// navigates back to the intro screen, and a small logo placeholder
-    /// on the right side.
+    /// The bottom toolbar content matching Ionic's ion-footer:
+    /// ion-toolbar with color="dark" (#2c2c2c background),
+    /// left side: "Cancel and go Back" button (fill="clear", text-uppercase,
+    /// color="light" which is near-white), preceded by left guillemet.
+    /// right side: logo-small.svg image (height: 20px, float right).
     private var bottomToolbarContent: some View {
         HStack {
             Button {
                 navigationPath = NavigationPath()
             } label: {
-                Text("Cancel and go Back")
+                Text("\u{00AB} Cancel and go Back")
                     .font(.system(size: 14))
-                    .foregroundColor(Color.appTextGray)
+                    .textCase(.uppercase)
+                    .foregroundColor(Color(hex: "f4f5f8"))
             }
 
             Spacer()
 
-            // Small logo placeholder in the toolbar.
-            Image(systemName: "dollarsign.circle.fill")
+            // Small logo in the toolbar matching Ionic's .bar-logo img with height: 20px.
+            Image("logo-small")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 28, height: 28)
-                .foregroundColor(Color.appLink)
+                .frame(height: 20)
         }
     }
 
     /// Validates the form fields and initiates the login request.
     /// Checks that both email and password are non-empty before calling
     /// authService.login(). Sets isLoading to true during the request
-    /// and displays an error alert if the request fails.
+    /// and displays an alert on authentication failure. Error alert matches
+    /// Ionic's doErrorAlert with header "Oops! Login Error".
     private func performLogin() {
         // Validate that required fields are not empty.
         guard !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {

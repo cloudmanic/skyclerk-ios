@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="119.188" height="106.438" viewBox="0 0 119.188 106.438">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #23282b;
+        fill-opacity: 0.7;
+        fill-rule: evenodd;
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="69.656" y="491.562" width="119.188" height="106.438" filterUnits="userSpaceOnUse">
+      <feOffset result="offset" dy="2" in="SourceAlpha"/>
+      <feGaussianBlur result="blur"/>
+      <feFlood result="flood" flood-color="#fff" flood-opacity="0.08"/>
+      <feComposite result="composite" operator="in" in2="blur"/>
+      <feBlend result="blend" in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <path id="camera-graphic" class="cls-1" d="M132.493,525.72a18.871,18.871,0,1,0,23.8,12.088A18.9,18.9,0,0,0,132.493,525.72Zm4.273,29.156a11.1,11.1,0,1,1,10.3-19.6A17.925,17.925,0,0,0,136.766,554.876Zm23.619-58.512-7.13,2.328-2.328-7.131-7.129,2.327,2.327,7.131-35.648,11.635a7.876,7.876,0,0,0-9.457-4.8L86.761,512.5a7.879,7.879,0,0,0-4.8,9.458l-7.13,2.327a7.529,7.529,0,0,0-4.8,9.456l18.616,57.037a7.523,7.523,0,0,0,9.457,4.8l85.556-27.924a7.523,7.523,0,0,0,4.8-9.457l-18.616-57.036A7.529,7.529,0,0,0,160.385,496.364ZM92.621,545.092a5.464,5.464,0,1,1,3.495-6.889A5.463,5.463,0,0,1,92.621,545.092Zm54.61,25.782a28.623,28.623,0,1,1,18.328-36.091A28.659,28.659,0,0,1,147.231,570.874Z" transform="translate(-69.656 -491.562)"/>
+</svg>
