@@ -10,9 +10,9 @@ import SwiftUI
 /// A single row in the ledger list that displays a financial transaction entry.
 /// Matches the Ionic app-ledger-list row styling exactly:
 /// - 3-column layout: date (col-2), vendor/category (col-6), amount (remaining)
-/// - Date column: month/day in small text on the first line, year below, font-weight 500, size 15px
-/// - Vendor column: contact name in #606060, category name as a link in #1181c3
-/// - Amount column: inset shadow box (#eaeaea background, rounded 4px, bold 16px text),
+/// - Date column: month/day in <small> text on the first line, year below, font-weight 500, size 15px
+/// - Vendor column: contact name in #606060 14px, category name in <small><a> #1181c3 ~13px
+/// - Amount column: inset shadow box (#eaeaea background, rounded 4px, semibold 16px text),
 ///   with a small colored circle indicator (green #698451 for income, red #b7433f for expense)
 /// - Row text color is dark (not white) since rows have white/light gray backgrounds
 /// The entire row is wrapped in a NavigationLink for tap navigation to the detail view.
@@ -29,12 +29,13 @@ struct LedgerRowView: View {
             HStack(alignment: .center, spacing: 0) {
                 // Left column (size="2"): Transaction date formatted as "MMM dd\nyyyy".
                 dateColumn
-                    .frame(width: 60)
+                    .frame(width: 55)
                     .padding(.leading, 12)
 
                 // Middle column (size="6", class="size-sm"): Contact name and category.
                 contactColumn
-                    .padding(.horizontal, 8)
+                    .padding(.leading, 8)
+                    .padding(.trailing, 4)
 
                 Spacer()
 
@@ -49,29 +50,31 @@ struct LedgerRowView: View {
 
     /// The date column displayed on the left side of the row.
     /// Parses the ledger's date string and formats it as a two-line display
-    /// matching the Ionic format: "MMM dd" in small text on top, "yyyy" below.
-    /// Uses font-weight 500, font-size 15px matching the Ionic .date class.
+    /// matching the Ionic format: "MMM dd" in <small> text on top, "yyyy" below.
+    /// The <small> tag in HTML renders at ~80% of parent size, so month/day is ~11px
+    /// while the year uses the full .date class size of 15px weight 500.
     private var dateColumn: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 1) {
             if let date = ledger.formattedDate {
                 Text(formatMonthDay(date))
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.black)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(Color(hex: "333333"))
                 Text(formatYear(date))
                     .font(.system(size: 15, weight: .medium))
                     .foregroundColor(.black)
             } else {
                 Text(ledger.LedgerDate)
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundColor(.black)
             }
         }
     }
 
     /// The contact and category column displayed in the center of the row.
-    /// Shows the contact display name (vendor) in #606060 color, with the
-    /// category name below in #1181c3 (link blue) as a smaller text.
-    /// Matches the Ionic .vendor class styling.
+    /// Shows the contact display name (vendor) in #606060 color at 14px,
+    /// with the category name below in #1181c3 (link blue) at ~13px.
+    /// The Ionic wraps the category in <small><a>, which renders slightly smaller
+    /// than the base 14px row font. Matches the Ionic .vendor class styling.
     private var contactColumn: some View {
         VStack(alignment: .leading, spacing: 2) {
             // Contact display name (vendor or payee) in gray.
@@ -80,10 +83,10 @@ struct LedgerRowView: View {
                 .foregroundColor(Color(hex: "606060"))
                 .lineLimit(1)
 
-            // Category name in link blue (#1181c3) matching the Ionic <a> styling.
+            // Category name in link blue (#1181c3) matching the Ionic <small><a> styling.
             if !ledger.LedgerCategory.Name.isEmpty {
                 Text(ledger.LedgerCategory.Name)
-                    .font(.system(size: 16))
+                    .font(.system(size: 13))
                     .foregroundColor(Color(hex: "1181c3"))
                     .lineLimit(1)
             }
@@ -96,35 +99,39 @@ struct LedgerRowView: View {
     /// with a small colored circle indicator on the right edge. Green circle (#698451) for
     /// income (positive amounts), red circle and red text (#b7433f) for expenses (negative).
     /// The box has rounded corners (4px), font-weight 600, font-size 16px, and text-align right.
+    /// Includes white text-shadow matching Ionic $t_shadow_white.
     /// Matches the Ionic .amount class with its :before pseudo-element for the indicator dot.
     private var amountColumn: some View {
         ZStack(alignment: .trailing) {
             // Amount text inside the inset shadow box matching Ionic styling:
-            // background #eaeaea, inset box-shadow, outer subtle white shadow, border-radius 4px.
+            // background #eaeaea, inset box-shadow rgba(0,0,0,0.33), border-radius 4px,
+            // text-shadow 0px 1px 0px rgba(255,255,255,0.4).
             Text(ledger.Amount.toCurrency())
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(ledger.Amount < 0 ? Color(hex: "b7433f") : Color(hex: "606060"))
+                .shadow(color: Color.white.opacity(0.4), radius: 0, x: 0, y: 1)
                 .padding(.vertical, 7)
                 .padding(.leading, 5)
                 .padding(.trailing, 15)
-                .frame(maxWidth: 100, alignment: .trailing)
+                .frame(minWidth: 80, alignment: .trailing)
                 .background(Color(hex: "eaeaea"))
                 .cornerRadius(4)
                 .overlay(
-                    // Simulate inset shadow: dark gradient at the top fading down.
+                    // Simulate inset shadow: dark gradient at the top fading down,
+                    // matching Ionic inset 0px 2px 3px 0px rgba(0,0,0,0.33).
                     RoundedRectangle(cornerRadius: 4)
                         .fill(
                             LinearGradient(
-                                colors: [Color.black.opacity(0.18), Color.clear],
+                                colors: [Color.black.opacity(0.2), Color.clear],
                                 startPoint: .top,
-                                endPoint: UnitPoint(x: 0.5, y: 0.35)
+                                endPoint: UnitPoint(x: 0.5, y: 0.4)
                             )
                         )
                         .allowsHitTesting(false)
                 )
-                .shadow(color: Color.white.opacity(0.004), radius: 0, x: 0, y: 2)
 
             // Colored circle indicator on the right edge of the box.
+            // Matches Ionic :before pseudo-element: right: -8px, 16x16, border-radius 50%.
             Circle()
                 .fill(ledger.Amount < 0 ? Color(hex: "b7433f") : Color(hex: "698451"))
                 .frame(width: 16, height: 16)

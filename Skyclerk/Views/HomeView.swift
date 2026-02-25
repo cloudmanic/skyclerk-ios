@@ -485,16 +485,15 @@ struct HomeView: View {
     /// Each row has a top and bottom border (#cbcbcb). Matches the Ionic tableViewGrid styling.
     private var ledgerList: some View {
         LazyVStack(spacing: 0) {
+            // Top border for the first row.
+            Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 0.5)
+
             ForEach(Array(ledgers.enumerated()), id: \.element.id) { index, ledger in
                 LedgerRowView(ledger: ledger)
                     .background(index % 2 == 0 ? Color.white : Color(hex: "f7f7f7"))
-                    .overlay(
-                        VStack(spacing: 0) {
-                            Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 1)
-                            Spacer()
-                            Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 1)
-                        }
-                    )
+
+                // Bottom border after each row (also acts as top border for next row).
+                Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 0.5)
             }
         }
     }
@@ -628,16 +627,13 @@ struct HomeView: View {
     /// the Ionic tableViewGrid ion-row styling.
     private var snapClerkList: some View {
         LazyVStack(spacing: 0) {
+            Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 0.5)
+
             ForEach(Array(snapclerks.enumerated()), id: \.element.id) { index, snapclerk in
                 SnapClerkRowView(snapclerk: snapclerk)
                     .background(index % 2 == 0 ? Color.white : Color(hex: "f7f7f7"))
-                    .overlay(
-                        VStack(spacing: 0) {
-                            Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 1)
-                            Spacer()
-                            Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 1)
-                        }
-                    )
+
+                Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 0.5)
             }
         }
     }
@@ -804,16 +800,13 @@ struct HomeView: View {
     /// backgrounds and borders, matching the main ledger tab appearance.
     private var searchResultsList: some View {
         LazyVStack(spacing: 0) {
+            Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 0.5)
+
             ForEach(Array(ledgers.enumerated()), id: \.element.id) { index, ledger in
                 LedgerRowView(ledger: ledger)
                     .background(index % 2 == 0 ? Color.white : Color(hex: "f7f7f7"))
-                    .overlay(
-                        VStack(spacing: 0) {
-                            Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 1)
-                            Spacer()
-                            Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 1)
-                        }
-                    )
+
+                Rectangle().fill(Color(hex: "cbcbcb")).frame(height: 0.5)
             }
         }
     }
