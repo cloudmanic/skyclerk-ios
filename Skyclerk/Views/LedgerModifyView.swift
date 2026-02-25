@@ -192,44 +192,37 @@ struct LedgerModifyView: View {
 
             ScrollView {
                 VStack(spacing: 0) {
-                    // The dark form card container.
+                    // The dark form card container with horizontal margin to show rounded edges.
                     formCard
+                        .padding(.horizontal, 12)
+                        .padding(.top, 12)
                 }
-                .padding(.horizontal, 0)
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            // Empty principal to prevent default title.
-            ToolbarItem(placement: .principal) {
-                EmptyView()
-            }
-        }
-        .toolbarBackground(bgColor, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
-        .toolbar {
+        .navigationBarHidden(true)
+        .safeAreaInset(edge: .bottom) {
             // Bottom toolbar with cancel link and logo, matching Ionic dark footer.
-            ToolbarItem(placement: .bottomBar) {
-                HStack {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("\u{00AB} Cancel and go Back")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(linkColor)
-                            .textCase(.uppercase)
-                    }
-                    Spacer()
-                    Image("logo-small")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 20)
+            HStack {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("\u{00AB} Cancel and go Back")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(linkColor)
+                        .textCase(.uppercase)
                 }
+                Spacer()
+                Image("logo-small")
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .frame(height: 20)
+                    .foregroundColor(Color(hex: "808080"))
             }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(Color(hex: "2c2c2c"))
         }
-        .toolbarBackground(Color(hex: "2c2c2c"), for: .bottomBar)
-        .toolbarColorScheme(.dark, for: .bottomBar)
         .onAppear {
             loadData()
         }
@@ -504,8 +497,10 @@ struct LedgerModifyView: View {
         Button(action: action) {
             Image("down-arrow-gray")
                 .resizable()
+                .renderingMode(.template)
                 .scaledToFit()
                 .frame(height: 24)
+                .foregroundColor(.white)
                 .padding(.top, 3)
         }
         .frame(width: 50, height: 42)
@@ -516,7 +511,13 @@ struct LedgerModifyView: View {
                 endPoint: .top
             )
         )
+        .overlay(
+            // Inset highlight matching Ionic box-shadow.
+            RoundedRectangle(cornerRadius: 5)
+                .stroke(Color.white.opacity(0.32), lineWidth: 1)
+        )
         .cornerRadius(5)
+        .shadow(color: Color.white.opacity(0.28), radius: 8, x: 0, y: 0)
     }
 
     // MARK: - Action Buttons Row
@@ -589,13 +590,16 @@ struct LedgerModifyView: View {
             Button(action: action) {
                 Image(imageName)
                     .resizable()
+                    .renderingMode(.template)
                     .scaledToFit()
                     .frame(height: 36)
+                    .foregroundColor(Color(hex: "b4b4b4"))
             }
             .frame(width: 70, height: 70)
             .background(actionBtnBg)
             .overlay(
-                // Top highlight matching Ionic box-shadow: 0px -2px 0px rgba(255,255,255,0.22).
+                // Top highlight and bottom shadow matching Ionic box-shadow:
+                // 0px -2px 0px rgba(255,255,255,0.22), inset 0px -2px 0px rgba(0,0,0,0.67).
                 VStack {
                     Color.white.opacity(0.22).frame(height: 2)
                     Spacer()
