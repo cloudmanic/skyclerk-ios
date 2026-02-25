@@ -102,45 +102,44 @@ struct LedgerRowView: View {
     /// Includes white text-shadow matching Ionic $t_shadow_white.
     /// Matches the Ionic .amount class with its :before pseudo-element for the indicator dot.
     private var amountColumn: some View {
-        // Use HStack with negative spacing so the circle overlaps the right edge
-        // of the amount box by 8px, matching the Ionic :before pseudo-element
-        // (right: -8px). This keeps the dot in the layout flow so it won't get
-        // clipped by adjacent row backgrounds.
-        HStack(spacing: -8) {
-            // Amount text inside the inset shadow box matching Ionic styling:
-            // background #eaeaea, inset box-shadow rgba(0,0,0,0.33), border-radius 4px,
-            // text-shadow 0px 1px 0px rgba(255,255,255,0.4).
-            Text(ledger.Amount.toCurrency())
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(ledger.Amount < 0 ? Color(hex: "b7433f") : Color(hex: "606060"))
-                .shadow(color: Color.white.opacity(0.4), radius: 0, x: 0, y: 1)
-                .padding(.vertical, 7)
-                .padding(.leading, 5)
-                .padding(.trailing, 15)
-                .frame(minWidth: 80, alignment: .trailing)
-                .background(Color(hex: "eaeaea"))
-                .cornerRadius(4)
-                .overlay(
-                    // Simulate inset shadow: dark gradient at the top fading down,
-                    // matching Ionic inset 0px 2px 3px 0px rgba(0,0,0,0.33).
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(
-                            LinearGradient(
-                                colors: [Color.black.opacity(0.2), Color.clear],
-                                startPoint: .top,
-                                endPoint: UnitPoint(x: 0.5, y: 0.4)
-                            )
+        // Amount text inside the inset shadow box matching Ionic styling:
+        // background #eaeaea, inset box-shadow rgba(0,0,0,0.33), border-radius 4px,
+        // text-shadow 0px 1px 0px rgba(255,255,255,0.4).
+        // The colored semicircle indicator sits on the right edge of the box,
+        // matching the Ionic :before pseudo-element (16x16 circle with right: -8px,
+        // which shows only the left half visible against the box).
+        Text(ledger.Amount.toCurrency())
+            .font(.system(size: 16, weight: .semibold))
+            .foregroundColor(ledger.Amount < 0 ? Color(hex: "b7433f") : Color(hex: "606060"))
+            .shadow(color: Color.white.opacity(0.4), radius: 0, x: 0, y: 1)
+            .padding(.vertical, 7)
+            .padding(.leading, 5)
+            .padding(.trailing, 15)
+            .frame(width: 120, alignment: .trailing)
+            .background(Color(hex: "eaeaea"))
+            .cornerRadius(4)
+            .overlay(
+                // Simulate inset shadow: dark gradient at the top fading down,
+                // matching Ionic inset 0px 2px 3px 0px rgba(0,0,0,0.33).
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.black.opacity(0.2), Color.clear],
+                            startPoint: .top,
+                            endPoint: UnitPoint(x: 0.5, y: 0.4)
                         )
-                        .allowsHitTesting(false)
-                )
-
-            // Colored circle indicator straddling the right edge of the amount box.
-            // The -8 spacing causes it to overlap the box. Matches Ionic :before
-            // pseudo-element: right: -8px, 16x16, border-radius 50%.
-            Circle()
-                .fill(ledger.Amount < 0 ? Color(hex: "b7433f") : Color(hex: "698451"))
-                .frame(width: 16, height: 16)
-        }
+                    )
+                    .allowsHitTesting(false)
+            )
+            .overlay(alignment: .trailing) {
+                // Semicircle indicator on the right edge. A 16x16 circle offset so
+                // its left half overlaps the box edge, clipped to the box bounds.
+                Circle()
+                    .fill(ledger.Amount < 0 ? Color(hex: "b7433f") : Color(hex: "698451"))
+                    .frame(width: 16, height: 16)
+                    .offset(x: 8)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 4))
     }
 
     /// Formats a Date as "MMM dd" for the top line of the date column.
