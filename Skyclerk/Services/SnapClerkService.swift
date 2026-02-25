@@ -30,8 +30,8 @@ class SnapClerkService {
 
         let queryItems: [URLQueryItem] = [
             URLQueryItem(name: "page", value: String(page)),
-            URLQueryItem(name: "order", value: "desc"),
-            URLQueryItem(name: "sort", value: "created_at")
+            URLQueryItem(name: "order", value: "SnapClerkId"),
+            URLQueryItem(name: "sort", value: "desc")
         ]
 
         let response: PaginatedResponse<[SnapClerk]> = try await APIService.shared.getPaginated(url: url, queryItems: queryItems)

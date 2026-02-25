@@ -111,6 +111,9 @@ struct HomeView: View {
             .navigationBarHidden(true)
         }
         .onAppear {
+            // Configure the pull-to-refresh control to show "Refreshing" text on a white background.
+            UIRefreshControl.appearance().attributedTitle = NSAttributedString(string: "Refreshing")
+            UIRefreshControl.appearance().backgroundColor = .white
             loadInitialData()
         }
         .alert("Error", isPresented: $showError) {
@@ -411,6 +414,7 @@ struct HomeView: View {
                     }
                 }
             }
+            .background(Color.white)
             .refreshable {
                 await refreshLedgerData()
             }
@@ -587,6 +591,7 @@ struct HomeView: View {
                     }
                 }
             }
+            .background(Color.white)
             .refreshable {
                 await refreshSnapClerkData()
             }
@@ -664,7 +669,8 @@ struct HomeView: View {
             }
             .padding(.vertical, 20)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.white)
     }
 
     /// The "Load More" button for the Snap!Clerk list. Styled identically to the ledger
@@ -1069,7 +1075,13 @@ struct HomeView: View {
     /// Called by pull-to-refresh on the ledger list. Also refreshes the P&L report and snapclerks.
     private func refreshLedgerData() async {
         currentPage = 1
+        // Ensure the spinner is visible for at least 3 seconds even if the API responds instantly.
+        let start = Date()
         await loadPageData()
+        let elapsed = Date().timeIntervalSince(start)
+        if elapsed < 3.0 {
+            try? await Task.sleep(nanoseconds: UInt64((3.0 - elapsed) * 1_000_000_000))
+        }
     }
 
     /// Loads the next page of ledger entries and appends them to the existing list.

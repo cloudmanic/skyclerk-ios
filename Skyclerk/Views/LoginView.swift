@@ -78,21 +78,34 @@ struct LoginView: View {
                 .background(Color.appDark)
                 .cornerRadius(10)
                 .shadow(color: .black.opacity(0.75), radius: 16, x: 0, y: 0)
-                .padding(.top, 0)
+                .padding(.horizontal, 12)
             }
         }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
+        .navigationBarHidden(true)
+        .safeAreaInset(edge: .bottom) {
             // Bottom toolbar matching Ionic's ion-footer with dark toolbar,
             // cancel button on the left and small logo on the right.
-            ToolbarItemGroup(placement: .bottomBar) {
-                bottomToolbarContent
+            HStack {
+                Button {
+                    navigationPath = NavigationPath()
+                } label: {
+                    Text("\u{00AB} Cancel and go Back")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(Color(hex: "f4f5f8"))
+                        .textCase(.uppercase)
+                }
+                Spacer()
+                Image("logo-small")
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .frame(height: 20)
+                    .foregroundColor(Color(hex: "808080"))
             }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(Color(hex: "2c2c2c"))
         }
-        .toolbarBackground(Color(hex: "2c2c2c"), for: .bottomBar)
-        .toolbarBackground(.visible, for: .bottomBar)
-        .toolbarColorScheme(.dark, for: .bottomBar)
-        .darkToolbar()
         .alert("Oops! Login Error", isPresented: $showError) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -203,6 +216,13 @@ struct LoginView: View {
                 RoundedRectangle(cornerRadius: 6)
                     .stroke(Color(hex: "141414"), lineWidth: 2)
             )
+            .overlay(
+                // Inset highlight matching Ionic box-shadow: inset 0px 2px 0px rgba(255,255,255,0.32).
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(Color.white.opacity(0.32), lineWidth: 1)
+                    .padding(2)
+            )
+            .shadow(color: Color.white.opacity(0.28), radius: 8, x: 0, y: 0)
         }
         .disabled(isLoading)
     }
@@ -231,32 +251,6 @@ struct LoginView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 40)
-        }
-    }
-
-    /// The bottom toolbar content matching Ionic's ion-footer:
-    /// ion-toolbar with color="dark" (#2c2c2c background),
-    /// left side: "Cancel and go Back" button (fill="clear", text-uppercase,
-    /// color="light" which is near-white), preceded by left guillemet.
-    /// right side: logo-small.svg image (height: 20px, float right).
-    private var bottomToolbarContent: some View {
-        HStack {
-            Button {
-                navigationPath = NavigationPath()
-            } label: {
-                Text("\u{00AB} Cancel and go Back")
-                    .font(.system(size: 14))
-                    .textCase(.uppercase)
-                    .foregroundColor(Color(hex: "f4f5f8"))
-            }
-
-            Spacer()
-
-            // Small logo in the toolbar matching Ionic's .bar-logo img with height: 20px.
-            Image("logo-small")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 20)
         }
     }
 

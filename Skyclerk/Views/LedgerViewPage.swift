@@ -134,27 +134,30 @@ struct LedgerViewPage: View {
                 }
             }
         }
-        .navigationTitle("Entry Details")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .darkToolbar()
-        .toolbar {
-            // Dark footer toolbar with back button matching Ionic ion-footer.
-            ToolbarItem(placement: .bottomBar) {
-                HStack {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("\u{00AB} Go Back to Ledger")
-                            .font(.system(size: 14, weight: .regular))
-                            .foregroundColor(.white)
-                    }
-                    Spacer()
+        .navigationBarHidden(true)
+        .safeAreaInset(edge: .bottom) {
+            // Bottom toolbar matching Ionic ion-footer with color="light" button and logo.
+            HStack {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("\u{00AB} Go Back to Ledger")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(Color(hex: "f4f5f8"))
+                        .textCase(.uppercase)
                 }
+                Spacer()
+                Image("logo-small")
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .frame(height: 20)
+                    .foregroundColor(Color(hex: "808080"))
             }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(Color(hex: "2c2c2c"))
         }
-        .toolbarBackground(Color(hex: "2c2c2c"), for: .bottomBar)
-        .toolbarColorScheme(.dark, for: .bottomBar)
         .alert("Delete Ledger Entry", isPresented: $showDeleteConfirmation) {
             Button("No, just joking.", role: .cancel) {}
             Button("Yes, I am sure.", role: .destructive) {

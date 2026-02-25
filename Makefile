@@ -69,6 +69,7 @@ run: build ## Build and run on simulator
 	@xcrun simctl boot $(SIMULATOR_ID) 2>/dev/null || true
 	@open -a Simulator
 	@sleep 2
+	@xcrun simctl terminate $(SIMULATOR_ID) com.cloudmanic.skyclerk 2>/dev/null || true
 	@APP_PATH=$$(find ~/Library/Developer/Xcode/DerivedData/Skyclerk-*/Build/Products/$(CONFIGURATION)-iphonesimulator -name "Skyclerk.app" -maxdepth 1 2>/dev/null | head -1); \
 	if [ -n "$$APP_PATH" ]; then \
 		xcrun simctl install $(SIMULATOR_ID) "$$APP_PATH"; \

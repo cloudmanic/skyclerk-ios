@@ -6,12 +6,16 @@
 //
 
 import Foundation
+import os
 
 /// Service responsible for user authentication, registration, and session management.
 /// Uses OAuth password grant flow for login and stores credentials in UserDefaults.
 /// Publishes authentication state changes so SwiftUI views can react to login/logout events.
 @MainActor
 class AuthService: ObservableObject {
+    /// Logger for authentication-related events.
+    private let logger = Logger(subsystem: "com.cloudmanic.skyclerk", category: "AuthService")
+
     /// Shared singleton instance used throughout the app.
     static let shared = AuthService()
 
@@ -33,6 +37,7 @@ class AuthService: ObservableObject {
     func checkAuth() {
         let token = UserDefaults.standard.string(forKey: "access_token")
         isAuthenticated = (token != nil && !token!.isEmpty)
+        logger.info("checkAuth: token=\(token != nil ? "present(\(token!.prefix(8))...)" : "nil", privacy: .public) → isAuthenticated=\(self.isAuthenticated, privacy: .public)")
     }
 
     /// Authenticates the user with email and password using the OAuth password grant flow.
@@ -98,7 +103,7 @@ class AuthService: ObservableObject {
             "token": ""
         ]
 
-        let response: RegisterResponse = try await APIService.shared.postForm(url: url, params: params)
+        let response: RegisterResponse = try await APIService.shared.postJSON(url: url, body: params)
 
         // Store credentials in UserDefaults for persistent session.
         UserDefaults.standard.set(response.access_token, forKey: "access_token")
@@ -112,10 +117,17 @@ class AuthService: ObservableObject {
     /// Sets isAuthenticated to false so the app navigates back to the login screen.
     /// Also stops the ping service timer to prevent background network requests.
     func logout() {
+        logger.info("logout: clearing all stored credentials")
         UserDefaults.standard.removeObject(forKey: "access_token")
         UserDefaults.standard.removeObject(forKey: "user_id")
         UserDefaults.standard.removeObject(forKey: "account_id")
         UserDefaults.standard.removeObject(forKey: "user_email")
+        UserDefaults.standard.synchronize()
+
+        // Verify the token was actually removed.
+        let tokenAfter = UserDefaults.standard.string(forKey: "access_token")
+        logger.info("logout: token after removal=\(tokenAfter ?? "nil", privacy: .public)")
+
         isAuthenticated = false
 
         // Stop the ping service when logging out.

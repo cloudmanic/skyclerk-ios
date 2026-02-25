@@ -50,9 +50,7 @@ struct IntroView: View {
             }
         }
         .onAppear {
-            // Check for stored credentials on appear. If valid access_token and
-            // user_id exist in UserDefaults, skip the intro and mark as authenticated.
-            checkForExistingCredentials()
+            // Auth state is already checked by AuthService.init() — no need to re-check here.
         }
     }
 
@@ -111,12 +109,18 @@ struct IntroView: View {
                             endPoint: .top
                         )
                     )
+                    .cornerRadius(6)
                     .overlay(
                         // 2px solid #141414 border matching --border-width/--border-color.
                         RoundedRectangle(cornerRadius: 6)
                             .stroke(Color.appDark, lineWidth: 2)
                     )
-                    .cornerRadius(6)
+                    .overlay(
+                        // Inset highlight matching Ionic box-shadow: inset 0px 2px 0px rgba(255,255,255,0.32).
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.white.opacity(0.32), lineWidth: 1)
+                            .padding(2)
+                    )
                     .shadow(color: Color.white.opacity(0.28), radius: 8, x: 0, y: 0)
                 }
             }
@@ -172,6 +176,7 @@ struct IntroView: View {
                 }
                 .padding(.top, 10)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(height: height)
     }
@@ -216,17 +221,6 @@ struct IntroView: View {
         }
     }
 
-    /// Checks UserDefaults for existing access_token and user_id values.
-    /// If both are present and non-empty, sets authService.isAuthenticated to true
-    /// so the app bypasses the intro screen and navigates directly to the home screen.
-    private func checkForExistingCredentials() {
-        let token = UserDefaults.standard.string(forKey: "access_token")
-        let userId = UserDefaults.standard.integer(forKey: "user_id")
-
-        if let token = token, !token.isEmpty, userId > 0 {
-            authService.isAuthenticated = true
-        }
-    }
 }
 
 #Preview {

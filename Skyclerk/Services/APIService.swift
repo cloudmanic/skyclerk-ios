@@ -293,6 +293,41 @@ class APIService {
         try validateResponse(response, data: data)
     }
 
+    /// Performs a POST request with a JSON-encoded body without an Authorization header.
+    /// Used for unauthenticated endpoints like /register where the user does not yet have a token.
+    ///
+    /// - Parameters:
+    ///   - url: The full URL string for the request.
+    ///   - body: An Encodable object to serialize as the JSON request body.
+    /// - Returns: The decoded response of type T.
+    /// - Throws: APIError.invalidURL, APIError.encodingError, APIError.httpError, or APIError.decodingError.
+    func postJSON<T: Decodable, B: Encodable>(url: String, body: B) async throws -> T {
+        guard let requestURL = URL(string: url) else {
+            throw APIError.invalidURL
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        do {
+            request.httpBody = try encoder.encode(body)
+        } catch {
+            throw APIError.encodingError(error)
+        }
+        logRequest(request)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        logResponse(response, data: data)
+        try validateResponse(response, data: data)
+
+        do {
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            throw APIError.decodingError(error)
+        }
+    }
+
     // MARK: - PUT
 
     /// Performs an authenticated PUT request with a JSON-encoded body and decodes the response.

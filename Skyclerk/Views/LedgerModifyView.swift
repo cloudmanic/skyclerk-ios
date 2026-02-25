@@ -129,8 +129,8 @@ struct LedgerModifyView: View {
     /// Dark footer/toolbar background color (#141414).
     private let footerBg = Color(hex: "141414")
 
-    /// Link color for the back button (#b2d6ec).
-    private let linkColor = Color(hex: "b2d6ec")
+    /// Link color for the back button (#f4f5f8) matching Ionic color="light".
+    private let linkColor = Color(hex: "f4f5f8")
 
     // MARK: - Computed Properties
 
