@@ -121,9 +121,14 @@ struct HomeView: View {
         } message: {
             Text(errorMessage ?? "An unknown error occurred.")
         }
-        .confirmationDialog("Your Accounts", isPresented: $showAccountPicker, titleVisibility: .visible) {
-            // Show each account as a selectable option in the action sheet.
-            accountPickerButtons
+        .sheet(isPresented: $showAccountPicker) {
+            AccountPickerView(
+                accounts: user.Accounts,
+                currentAccountId: currentAccount.Id
+            ) { account in
+                switchAccount(to: account)
+            }
+            .presentationDetents([.medium, .large])
         }
     }
 
@@ -898,27 +903,6 @@ struct HomeView: View {
     }
 
     // MARK: - Account Picker
-
-    /// Generates the account picker confirmation dialog buttons. Creates one button
-    /// per account from the user's account list. Tapping an account switches the
-    /// active account, stores the new account ID in UserDefaults, and reloads all data.
-    @ViewBuilder
-    private var accountPickerButtons: some View {
-        ForEach(user.Accounts) { account in
-            Button {
-                switchAccount(to: account)
-            } label: {
-                if account.Id == currentAccount.Id {
-                    // Show a checkmark next to the currently active account.
-                    Label(account.Name, systemImage: "checkmark")
-                } else {
-                    Text(account.Name)
-                }
-            }
-        }
-
-        Button("Cancel", role: .cancel) {}
-    }
 
     // MARK: - Actions (Matching Ionic Methods)
 
