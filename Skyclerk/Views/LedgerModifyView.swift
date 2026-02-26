@@ -76,7 +76,7 @@ struct LedgerModifyView: View {
     /// The error message to display in the error alert.
     @State private var errorMessage: String = ""
 
-    /// Controls display of the contact picker confirmation dialog.
+    /// Controls display of the contact picker sheet modal.
     @State private var showContactPicker: Bool = false
 
     /// Controls display of the category picker confirmation dialog.
@@ -238,11 +238,19 @@ struct LedgerModifyView: View {
         } message: {
             Text("")
         }
-        .confirmationDialog("Contacts", isPresented: $showContactPicker, titleVisibility: .visible) {
-            contactPickerButtons
+        .sheet(isPresented: $showContactPicker) {
+            ContactPickerView(contacts: contacts) { contact in
+                contactName = contact.displayName
+                selectedContact = contact
+            }
+            .presentationDetents([.medium, .large])
         }
-        .confirmationDialog("Categories", isPresented: $showCategoryPicker, titleVisibility: .visible) {
-            categoryPickerButtons
+        .sheet(isPresented: $showCategoryPicker) {
+            CategoryPickerView(categories: filteredCategories) { category in
+                selectedCategory = category
+                categoryText = category.Name
+            }
+            .presentationDetents([.medium, .large])
         }
         .confirmationDialog("Attach Photo", isPresented: $showImageSourcePicker, titleVisibility: .visible) {
             imageSourceButtons
@@ -376,19 +384,6 @@ struct LedgerModifyView: View {
         }
     }
 
-    /// Builds the list of buttons for the contact picker confirmation dialog.
-    /// Each button sets the contact name field and stores the selected Contact object.
-    @ViewBuilder
-    private var contactPickerButtons: some View {
-        ForEach(contacts) { contact in
-            Button(contact.displayName) {
-                contactName = contact.displayName
-                selectedContact = contact
-            }
-        }
-        Button("Cancel", role: .cancel) {}
-    }
-
     // MARK: - Category Field
 
     /// Category text field with a gray gradient dropdown button on the right.
@@ -421,18 +416,6 @@ struct LedgerModifyView: View {
     }
 
     /// Builds the list of buttons for the category picker confirmation dialog.
-    /// Only shows categories that match the current transaction type.
-    @ViewBuilder
-    private var categoryPickerButtons: some View {
-        ForEach(filteredCategories) { category in
-            Button(category.Name) {
-                selectedCategory = category
-                categoryText = category.Name
-            }
-        }
-        Button("Cancel", role: .cancel) {}
-    }
-
     // MARK: - Date Field
 
     /// A date input field matching the Ionic ion-datetime display.
