@@ -231,12 +231,9 @@ struct LedgerModifyView: View {
         } message: {
             Text(errorMessage)
         }
-        .alert("Ledger Note", isPresented: $showNoteAlert) {
-            TextField("Enter a ledger note...", text: $note)
-            Button("Cancel", role: .cancel) {}
-            Button("Add Note") {}
-        } message: {
-            Text("")
+        .sheet(isPresented: $showNoteAlert) {
+            NoteEditorView(note: $note)
+                .presentationDetents([.medium])
         }
         .sheet(isPresented: $showContactPicker) {
             ContactPickerView(contacts: contacts) { contact in
